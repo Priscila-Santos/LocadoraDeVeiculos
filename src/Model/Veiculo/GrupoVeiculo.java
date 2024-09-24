@@ -1,4 +1,7 @@
 package Model.Veiculo;
 
-public enum GrupoVeiculo {
+import java.math.BigDecimal;
+
+public interface GrupoVeiculo {
+    BigDecimal getValor();
 }
