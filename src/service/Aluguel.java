@@ -15,6 +15,7 @@ public class Aluguel <T extends Veiculo<?>, P extends Pessoa>{
     private P pessoa;
     private Agencia agencia;
     private LocalDate dataAluguel;
+    private Agencia agenciaDevolucao;
     private LocalDate dataDevolucao;
 
     public Aluguel(T veiculo, P pessoa, Agencia agencia, LocalDate dataAluguel, LocalDate dataDevolucao) {
@@ -43,6 +44,7 @@ public class Aluguel <T extends Veiculo<?>, P extends Pessoa>{
     }
 
     public void realizarDevolucao(LocalDate dataDevolucao) {
+        this.agenciaDevolucao =  agenciaDevolucao;
         this.dataDevolucao = dataDevolucao;
         veiculo.setDisponivel(true);
         BigDecimal valorTotal = calcularValorTotal();
@@ -88,5 +90,14 @@ public class Aluguel <T extends Veiculo<?>, P extends Pessoa>{
 
     public void setDataDevolucao(LocalDate dataDevolucao) {
         this.dataDevolucao = dataDevolucao;
+    }
+
+
+    public Agencia getAgenciaDevolucao() {
+        return agenciaDevolucao;
+    }
+
+    public void setAgenciaDevolucao(Agencia agenciaDevolucao) {
+        this.agenciaDevolucao = agenciaDevolucao;
     }
 }
