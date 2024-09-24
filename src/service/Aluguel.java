@@ -18,11 +18,15 @@ public class Aluguel <T extends Veiculo<?>, P extends Pessoa>{
     private LocalDate dataDevolucao;
 
     public Aluguel(T veiculo, P pessoa, Agencia agencia, LocalDate dataAluguel, LocalDate dataDevolucao) {
+        if(!getVeiculo().getDisponivel()){
+            throw new RuntimeException("Veículo não está disponível para aluguel.");
+        }
         this.veiculo = veiculo;
         this.pessoa = pessoa;
         this.agencia = agencia;
         this.dataAluguel = dataAluguel;
         this.dataDevolucao = dataDevolucao;
+        this.getVeiculo().setDisponivel(false);
     }
 
     public BigDecimal calcularValorTotal() {
@@ -36,6 +40,14 @@ public class Aluguel <T extends Veiculo<?>, P extends Pessoa>{
 
         }
         return valorTotal;
+    }
+
+    public void realizarDevolucao(LocalDate dataDevolucao) {
+        this.dataDevolucao = dataDevolucao;
+        veiculo.setDisponivel(true);
+        BigDecimal valorTotal = calcularValorTotal();
+        System.out.println("Veículo devolvido com sucesso!");
+        System.out.println("Valor total do aluguel: " + valorTotal);
     }
 
     public T getVeiculo() {
