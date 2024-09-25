@@ -43,7 +43,7 @@ public class Aluguel <T extends Veiculo<?>, P extends Pessoa>{
         return valorTotal;
     }
 
-    public void realizarDevolucao(LocalDate dataDevolucao) {
+    public void realizarDevolucao(Agencia agenciaDevolucao, LocalDate dataDevolucao) {
         this.agenciaDevolucao =  agenciaDevolucao;
         this.dataDevolucao = dataDevolucao;
         veiculo.setDisponivel(true);
