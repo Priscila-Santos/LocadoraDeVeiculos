@@ -1,11 +1,12 @@
-package Repository;
+package Repository.Veiculo;
 
 import Model.Veiculo.Veiculo;
+import Repository.Repositorio;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RepositorioVeiculo implements Repositorio<Veiculo> {
+public class VeiculoRepository implements Repositorio<Veiculo> {
     private List<Veiculo> veiculos = new ArrayList<>();
 
     @Override

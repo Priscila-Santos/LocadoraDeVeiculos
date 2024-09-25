@@ -1,6 +1,6 @@
-package service;
+package Service;
 
-import Agencia.Agencia;
+import Model.Agencia.Agencia;
 import Model.Pessoa.Cliente;
 import Model.Pessoa.TipoCliente;
 import Model.Veiculo.Veiculo;
@@ -8,14 +8,14 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public class Aluguel <T extends Veiculo<?>, P extends Cliente>{
+public class AluguelService<T extends Veiculo<?>, P extends Cliente>{
     private T veiculo;
     private P pessoa;
     private Agencia agencia;
     private LocalDate dataAluguel;
     private LocalDate dataDevolucao;
 
-    public Aluguel(T veiculo, P pessoa, Agencia agencia, LocalDate dataAluguel, LocalDate dataDevolucao) {
+    public AluguelService(T veiculo, P pessoa, Agencia agencia, LocalDate dataAluguel, LocalDate dataDevolucao) {
         this.veiculo = veiculo;
         this.pessoa = pessoa;
         this.agencia = agencia;

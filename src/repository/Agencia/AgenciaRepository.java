@@ -1,4 +1,6 @@
-package Agencia;
+package Repository.Agencia;
+
+import Model.Agencia.Agencia;
 
 import java.util.List;
 
