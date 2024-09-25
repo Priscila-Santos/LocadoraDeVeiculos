@@ -1,4 +1,4 @@
-package Service;
+package service;
 
 import Model.Agencia.Agencia;
 import Model.Pessoa.Cliente;
