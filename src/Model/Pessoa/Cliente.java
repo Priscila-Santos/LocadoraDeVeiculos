@@ -3,16 +3,18 @@ package Model.Pessoa;
 import java.util.UUID;
 
 public abstract class Cliente {
-    String id;
-    String nome;
-    String telefone;
-    String email;
+    protected String id;
+    protected String nome;
+    protected String telefone;
+    protected String email;
+    protected TipoCliente tipo;
 
-    public Cliente(String nome, String telefone, String email) {
+    public Cliente(String nome, String telefone, String email, TipoCliente tipo) {
         this.id = gerarId();
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
+        this.tipo = tipo;
     }
 
     private String gerarId() {
@@ -46,4 +48,9 @@ public abstract class Cliente {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public TipoCliente getTipo() {
+        return tipo;
+    }
+
 }

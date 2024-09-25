@@ -1,16 +1,14 @@
 package service;
 
 import Agencia.Agencia;
+import Model.Pessoa.Cliente;
+import Model.Pessoa.TipoCliente;
 import Model.Veiculo.Veiculo;
-import Model.pessoa.Pessoa;
-import Model.pessoa.PessoaFisica;
-import Model.pessoa.PessoaJuridica;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public class Aluguel <T extends Veiculo<?>, P extends Pessoa>{
+public class Aluguel <T extends Veiculo<?>, P extends Cliente>{
     private T veiculo;
     private P pessoa;
     private Agencia agencia;
@@ -29,9 +27,9 @@ public class Aluguel <T extends Veiculo<?>, P extends Pessoa>{
         long diasAlugados = ChronoUnit.DAYS.between(dataAluguel, dataDevolucao);
         BigDecimal valorTotal = veiculo.getValorGrupo().multiply(new BigDecimal(diasAlugados));
 
-        if(pessoa instanceof PessoaFisica && diasAlugados > 5){
+        if(pessoa.getTipo() == TipoCliente.PESSOA_FISICA && diasAlugados > 5){
             valorTotal = valorTotal.multiply(BigDecimal.valueOf(0.95));
-        } else if (pessoa instanceof PessoaJuridica && diasAlugados > 3) {
+        } else if (pessoa.getTipo() == TipoCliente.PESSOA_JURIDICA && diasAlugados > 3) {
             valorTotal = valorTotal.multiply(BigDecimal.valueOf(0.90));
 
         }
