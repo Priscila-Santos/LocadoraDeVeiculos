@@ -1,18 +1,18 @@
 package Model.Agencia;
 
 public class Endereco {
-    private String logradura;
+    private String logradouro;
     private int numero;
     private String cidade;
     UF UF;
     private String CEP;
 
-    public String getLogradura() {
-        return logradura;
+    public String getLogradouro() {
+        return logradouro;
     }
 
-    public void setLogradura(String logradura) {
-        this.logradura = logradura;
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
     }
 
     public int getNumero() {

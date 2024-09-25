@@ -3,12 +3,13 @@ package Service;
 import Model.Agencia.Agencia;
 import Model.Pessoa.Cliente;
 import Model.Pessoa.TipoCliente;
+import Model.Veiculo.GrupoVeiculo;
 import Model.Veiculo.Veiculo;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public class AluguelService<T extends Veiculo<?>, P extends Cliente>{
+public class AluguelService<T extends Veiculo<? extends GrupoVeiculo>, P extends Cliente>{
     private T veiculo;
     private P pessoa;
     private Agencia agencia;
