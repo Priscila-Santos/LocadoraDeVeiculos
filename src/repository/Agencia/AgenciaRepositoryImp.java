@@ -5,7 +5,7 @@ import Model.Agencia.Agencia;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AgenciaRepositoryImp implements Repository.Agencia.AgenciaRepository {
+public class AgenciaRepositoryImp implements repository.Agencia.AgenciaRepository {
 
     private List<Agencia> agencias = new ArrayList<>();
 
@@ -17,28 +17,49 @@ public class AgenciaRepositoryImp implements Repository.Agencia.AgenciaRepositor
 
     @Override
     public void editar(Agencia agencia) {
+        boolean existe = false;
         for (int i = 0; i < agencias.size(); i++) {
             if (agencias.get(i).getId() == agencia.getId()) {
                 agencias.set(i, agencia);
                 System.out.println("Agencia " + agencia.getNome() + " editado com sucesso!");
-            } else {
-                System.out.println("Agencia " + agencia.getNome() + "não encontrada para edição.");
+                existe = true;
+                break;
             }
+        }
+        if (!existe) {
+            System.out.println("Agencia " + agencia.getNome() + "não encontrada.");
         }
     }
 
     @Override
     public List<Agencia> procurarPeloNome(String nome) {
-        return List.of(); //método ainda não criado
+        List<Agencia> agenciasResultado = new ArrayList<>();
+        for (Agencia agencia : agencias) {
+            if (agencia.getNome().equals(nome)) {
+                agenciasResultado.add(agencia);
+            }
+        }
+        return agenciasResultado;
     }
 
     @Override
     public List<Agencia> procurarPeloEndereco(String endereco) {
-        return List.of(); //método ainda não criado
+        List<Agencia> agenciasResultado = new ArrayList<>();
+        for (Agencia agencia : agencias) {
+            if (agencia.getEndereco().equals(endereco)) {
+                agenciasResultado.add(agencia);
+            }
+        }
+        return agenciasResultado;
     }
 
     @Override
-    public Agencia getById(int id) {
-        return null; //método ainda não criado
+    public Agencia getById(String id) {
+        for (Agencia agencia : agencias) {
+            if (agencia.getId().equals(id)) {
+                return agencia;
+            }
+        }
+        return null;
     }
 }

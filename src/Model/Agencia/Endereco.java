@@ -4,8 +4,16 @@ public class Endereco {
     private String logradouro;
     private int numero;
     private String cidade;
-    UF UF;
+    private UF UF;
     private String CEP;
+
+    public Endereco(String logradouro, int numero, String cidade, UF uf, String CEP) {
+        this.logradouro = logradouro;
+        this.numero = numero;
+        this.cidade = cidade;
+        this.UF = uf;
+        this.CEP = CEP;
+    }
 
     public String getLogradouro() {
         return logradouro;

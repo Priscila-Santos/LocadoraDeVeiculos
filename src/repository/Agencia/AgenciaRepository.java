@@ -1,4 +1,4 @@
-package Repository.Agencia;
+package repository.Agencia;
 
 import Model.Agencia.Agencia;
 
@@ -10,6 +10,5 @@ public interface AgenciaRepository {
     void editar(Agencia agencia);
     List<Agencia> procurarPeloNome(String nome);
     List<Agencia> procurarPeloEndereco(String endereco);
-    Agencia getById(int id);
-
+    Agencia getById(String id);
 }
