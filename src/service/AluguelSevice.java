@@ -1,55 +1,40 @@
 package service;
 
-import Agencia.Agencia;
+import Model.Agencia.Agencia;
+import Model.Veiculo.GrupoVeiculo;
 import Model.Veiculo.Veiculo;
-import Model.pessoa.Pessoa;
-import Model.pessoa.PessoaFisica;
-import Model.pessoa.PessoaJuridica;
+import Model.Pessoa.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public class Aluguel <T extends Veiculo<?>, P extends Pessoa>{
+public class AluguelSevice <T extends Veiculo<? extends GrupoVeiculo>, P extends Cliente>{
     private T veiculo;
     private P pessoa;
     private Agencia agencia;
     private LocalDate dataAluguel;
-    private Agencia agenciaDevolucao;
     private LocalDate dataDevolucao;
 
-    public Aluguel(T veiculo, P pessoa, Agencia agencia, LocalDate dataAluguel, LocalDate dataDevolucao) {
-        if(!getVeiculo().getDisponivel()){
-            throw new RuntimeException("Veículo não está disponível para aluguel.");
-        }
+    public AluguelSevice(T veiculo, P pessoa, Agencia agencia, LocalDate dataAluguel, LocalDate dataDevolucao) {
         this.veiculo = veiculo;
         this.pessoa = pessoa;
         this.agencia = agencia;
         this.dataAluguel = dataAluguel;
         this.dataDevolucao = dataDevolucao;
-        this.getVeiculo().setDisponivel(false);
     }
 
     public BigDecimal calcularValorTotal() {
         long diasAlugados = ChronoUnit.DAYS.between(dataAluguel, dataDevolucao);
         BigDecimal valorTotal = veiculo.getValorGrupo().multiply(new BigDecimal(diasAlugados));
 
-        if(pessoa instanceof PessoaFisica && diasAlugados > 5){
+        if(pessoa.getTipo() == TipoCliente.PESSOA_FISICA && diasAlugados > 5){
             valorTotal = valorTotal.multiply(BigDecimal.valueOf(0.95));
-        } else if (pessoa instanceof PessoaJuridica && diasAlugados > 3) {
+        } else if (pessoa.getTipo() == TipoCliente.PESSOA_JURIDICA && diasAlugados > 3) {
             valorTotal = valorTotal.multiply(BigDecimal.valueOf(0.90));
 
         }
         return valorTotal;
-    }
-
-    public void realizarDevolucao(Agencia agenciaDevolucao, LocalDate dataDevolucao) {
-        this.agenciaDevolucao =  agenciaDevolucao;
-        this.dataDevolucao = dataDevolucao;
-        veiculo.setDisponivel(true);
-        BigDecimal valorTotal = calcularValorTotal();
-        System.out.println("Veículo devolvido com sucesso!");
-        System.out.println("Valor total do aluguel: " + valorTotal);
     }
 
     public T getVeiculo() {
@@ -90,14 +75,5 @@ public class Aluguel <T extends Veiculo<?>, P extends Pessoa>{
 
     public void setDataDevolucao(LocalDate dataDevolucao) {
         this.dataDevolucao = dataDevolucao;
-    }
-
-
-    public Agencia getAgenciaDevolucao() {
-        return agenciaDevolucao;
-    }
-
-    public void setAgenciaDevolucao(Agencia agenciaDevolucao) {
-        this.agenciaDevolucao = agenciaDevolucao;
     }
 }

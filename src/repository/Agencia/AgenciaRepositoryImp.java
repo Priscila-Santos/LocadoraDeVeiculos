@@ -1,9 +1,11 @@
-package Agencia;
+package repository.Agencia;
+
+import Model.Agencia.Agencia;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AgenciaRepositoryImp implements AgenciaRepository {
+public class AgenciaRepositoryImp implements Repository.Agencia.AgenciaRepository {
 
     private List<Agencia> agencias = new ArrayList<>();
 

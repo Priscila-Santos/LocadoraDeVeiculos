@@ -1,4 +1,4 @@
-package Agencia;
+package Model.Agencia;
 
 public class Agencia {
     private String id;

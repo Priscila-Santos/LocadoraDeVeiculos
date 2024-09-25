@@ -1,4 +1,4 @@
-package Agencia;
+package Model.Agencia;
 
 public enum UF {
     AC,
