@@ -1,23 +1,22 @@
 package service;
 
-import Model.Agencia.Agencia;
 import Model.Veiculo.GrupoVeiculo;
 import Model.Veiculo.Veiculo;
 import Model.Pessoa.*;
 import Model.aluguel.Aluguel;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public class AluguelSevice <T extends Veiculo<? extends GrupoVeiculo>, P extends Cliente>{
+public class AluguelSeviceImpl<T extends Veiculo<? extends GrupoVeiculo>, P extends Cliente> implements AluguelService{
     private Aluguel<T, P> aluguel;
 
-    public AluguelSevice(Aluguel<T, P> aluguel) {
+    public AluguelSeviceImpl(Aluguel<T, P> aluguel) {
         this.aluguel = aluguel;
     }
 
-    public BigDecimal calcularValorTotalAluguel() {
+    @Override
+    public BigDecimal calcularValorAluguel() {
         long diasAlugados = ChronoUnit.DAYS.between(aluguel.getDataAluguel(), aluguel.getDataDevolucao());
         BigDecimal valorTotal = aluguel.getVeiculo().getValorGrupo().multiply(new BigDecimal(diasAlugados));
 
@@ -30,7 +29,9 @@ public class AluguelSevice <T extends Veiculo<? extends GrupoVeiculo>, P extends
         return valorTotal;
     }
 
-    public String gerarComprovanteAluguel() {
+
+    @Override
+    public String gerarComprovante() {
         return String.format("""
                 ========== Comprovante Aluguel ==========
                 Veiculo: %s
@@ -44,8 +45,7 @@ public class AluguelSevice <T extends Veiculo<? extends GrupoVeiculo>, P extends
                     aluguel.getAgencia().getNome(),
                     aluguel.getDataAluguel().toString(),
                     aluguel.getDataDevolucao().toString(),
-                    calcularValorTotalAluguel().toString());
+                    calcularValorAluguel().toString());
 
     }
-
 }
