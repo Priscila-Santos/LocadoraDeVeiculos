@@ -1,6 +1,6 @@
 package View;
 
-import service.AluguelService;
+import service.*;
 import service.ClienteService;
 import service.VeiculoService;
 import utils.ScannerUtil;
