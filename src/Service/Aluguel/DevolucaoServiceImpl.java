@@ -1,18 +1,19 @@
-package service;
+package Service.Aluguel;
 
 import Model.Pessoa.Cliente;
 import Model.Veiculo.GrupoVeiculo;
 import Model.Veiculo.Veiculo;
-import Model.aluguel.Devolucao;
+import Model.Aluguel.Devolucao;
 
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
 
-public class DevolucaoServiceImpl<T extends Veiculo<? extends GrupoVeiculo>, P extends Cliente> implements AluguelService{
+public class DevolucaoServiceImpl<T extends Veiculo<? extends GrupoVeiculo>, P extends Cliente> implements AluguelService {
     private Devolucao<T, P> devolucao;
 
     public DevolucaoServiceImpl(Devolucao<T, P> devolucao) {
         this.devolucao = devolucao;
+        this.devolucao.getAluguel().getVeiculo().setDisponivel(true);
     }
 
     public BigDecimal calcularTaxaAtraso() {
@@ -38,7 +39,7 @@ public class DevolucaoServiceImpl<T extends Veiculo<? extends GrupoVeiculo>, P e
                 ========== Comprovante de Devolução ==========
                 Veiculo: %s
                 Cliente: %s
-                Agencia: %s
+                Agencia de Devolução: %s
                 Data de Aluguel: %s
                 Data de Devolucao Prevista: %s
                 Data de Devolucao Final: %s

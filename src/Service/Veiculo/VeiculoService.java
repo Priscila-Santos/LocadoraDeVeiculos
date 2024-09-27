@@ -1,4 +1,4 @@
-package service;
+package Service.Veiculo;
 
 import Model.Veiculo.Veiculo;
 

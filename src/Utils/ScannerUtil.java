@@ -1,4 +1,4 @@
-package utils;
+package Utils;
 
 import java.math.BigDecimal;
 import java.util.InputMismatchException;
