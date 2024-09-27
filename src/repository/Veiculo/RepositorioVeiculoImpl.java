@@ -5,79 +5,40 @@ import Model.Veiculo.Veiculo;
 import java.util.*;
 
 public class RepositorioVeiculoImpl implements RepositorioVeiculo {
-    private List<Veiculo> veiculos = new ArrayList<>();
+    private final List<Veiculo> listaDeVeiculos = new ArrayList<>();
 
-//    protected void atualizar(Veiculo veiculoParaEditar) throws VeiculoNaoEncontradoException {
-//        if (veiculoParaEditar.getId() == null) {
-//            throw new VeiculoNaoEncontradoException();
-//        }
-//
-//        Optional<Veiculo> veiculoOpcional = this.buscarPorId(veiculoParaEditar.getId());
-//        if (veiculoOpcional.isEmpty()) {
-//            throw new VeiculoNaoEncontradoException();
-//        }
-//
-//        Veiculo veiculo = veiculoOpcional.get();
-//        veiculo.setPlaca(veiculoParaEditar.getPlaca());
-//        veiculo.setTipo(veiculoParaEditar.getTipo());
-//    }
-
-//    protected void inserir(Veiculo veiculo) {
-//        if (veiculo.getId() == null) {
-//            veiculo.setId(UUID.randomUUID().toString());
-//        }
-//
-//        veiculos.add(veiculo);
-//    }
-
-//    @Override
-//    public void salvar(Veiculo veiculo) {
-//        try {
-//            atualizar(veiculo);
-//        } catch (VeiculoNaoEncontradoException e) {
-//            inserir(veiculo);
-//        }
-//    }
-
+    // Se o veículo já existe, atualiza-o, caso contrário, adiciona a lista
+    // Utilizaremos a placa para identificar o veículo
     @Override
-    public void salvar(Veiculo elemento) {
+    public void salvar(Veiculo veiculo) {
+        Optional<Veiculo> veiculoExistente = buscarPorPlaca(veiculo.getPlaca());
+        if (veiculoExistente.isPresent()) {
+            int index = listaDeVeiculos.indexOf(veiculoExistente.get());
+        } else {
+            listaDeVeiculos.add(veiculo);
+        }
     }
 
     @Override
     public void remover(String placa) {
         Optional<Veiculo> veiculo = buscarPorPlaca(placa);
-        if (veiculo.isEmpty()) {
+        if (veiculo.isPresent()) {
+            listaDeVeiculos.remove(veiculo.get());
+            System.out.println("Veículo com placa " + placa + " removido com sucesso.");
+        } else {
             System.out.println("Veículo com placa " + placa + " não encontrado.");
-            return;
         }
-
-        veiculos.remove(veiculo);
-        System.out.println("Veículo com placa " + placa + " removido com sucesso.");
     }
-
-//    @Override
-//    public Optional<Veiculo> buscarPorId(String id) {
-//        return veiculos.stream()
-//                .filter(veiculo -> Objects.equals(veiculo.getId(), id))
-//                .findFirst();
-//    }
 
     @Override
     public Optional<Veiculo> buscarPorPlaca(String placa) {
-        return veiculos.stream()
+        return listaDeVeiculos.stream()
                 .filter(veiculo -> Objects.equals(veiculo.getPlaca(), placa))
                 .findFirst();
     }
 
     @Override
     public List<Veiculo> listarTodos() {
-        return veiculos;
+        return new ArrayList<>(listaDeVeiculos); //Retorna cópia da lista
     }
-
-//    @Override
-//    public List<Veiculo> buscarPorTipo(Veiculo.Tipo tipo) {
-//        return veiculos.stream()
-//                .filter(veiculo -> veiculo.getTipo().equals(tipo))
-//                .toList();
-//    }
 }

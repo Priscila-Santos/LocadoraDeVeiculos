@@ -6,5 +6,4 @@ import java.util.Optional;
 
 public interface RepositorioVeiculo extends Repositorio<Veiculo, String> {
     Optional<Veiculo> buscarPorPlaca(String placa);
-    // Buscar por tipo
 }

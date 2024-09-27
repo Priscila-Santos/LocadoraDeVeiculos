@@ -9,15 +9,16 @@ import java.util.List;
 public class Aluguel {
     private String id;
     private Cliente cliente;
-    private List<Veiculo> veiculo;
+    private List<Veiculo> veiculos;
     private Integer valor;
     private String local;
     private Instant dataHora;
+    //Agencia
 
-    public Aluguel(String id, Cliente cliente, List<Veiculo> veiculo, Integer valor, String local, Instant dataHora) {
+    public Aluguel(String id, Cliente cliente, List<Veiculo> veiculos, Integer valor, String local, Instant dataHora) {
         this.id = id;
         this.cliente = cliente;
-        this.veiculo = veiculo;
+        this.veiculos = veiculos;
         this.valor = valor;
         this.local = local;
         this.dataHora = dataHora;
@@ -39,12 +40,12 @@ public class Aluguel {
         this.cliente = cliente;
     }
 
-    public List<Veiculo> getVeiculo() {
-        return veiculo;
+    public List<Veiculo> getVeiculos() {
+        return veiculos;
     }
 
-    public void setVeiculo(List<Veiculo> veiculo) {
-        this.veiculo = veiculo;
+    public void setVeiculos(List<Veiculo> veiculos) {
+        this.veiculos = veiculos;
     }
 
     public Integer getValor() {

@@ -1,16 +1,17 @@
 package service;
 
+import Model.Veiculo.TipoVeiculo;
 import Model.Veiculo.Veiculo;
 import repository.Veiculo.RepositorioVeiculo;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class VeiculoServiceImpl implements VeiculoService {
     private final RepositorioVeiculo repositorioVeiculo;
 
-    // Construtor que recebe o repositório como parâmetro
+    //Construtor
     public VeiculoServiceImpl(RepositorioVeiculo repositorioVeiculo) {
         this.repositorioVeiculo = repositorioVeiculo;
     }
@@ -18,21 +19,33 @@ public class VeiculoServiceImpl implements VeiculoService {
 
     @Override
     public void cadastrar(Veiculo veiculo) {
-
+        repositorioVeiculo.salvar(veiculo);
     }
 
     @Override
     public void editar(Veiculo veiculo) {
-
+        repositorioVeiculo.salvar(veiculo);
     }
 
     @Override
-    public Optional<Optional<Veiculo>> buscarPorPlaca(String placa) {
-        return Optional.empty();
+    public void remover(String placa) {
+        repositorioVeiculo.remover(placa);
+    }
+
+    @Override
+    public Optional<Veiculo> buscarPorPlaca(String placa) {
+        return repositorioVeiculo.buscarPorPlaca(placa);
+    }
+
+    @Override
+    public List<Veiculo> buscarPorTipo(TipoVeiculo tipo) {
+        return repositorioVeiculo.listarTodos().stream()
+                .filter(veiculo -> veiculo.getTipoVeiculo().equals(tipo))  // Filtra os veículos pelo tipo
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Veiculo> listarTodos() {
-        return List.of();
+        return repositorioVeiculo.listarTodos();
     }
 }
