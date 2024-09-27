@@ -25,8 +25,7 @@ public class RepositorioAluguelImpl implements RepositorioAluguel {
     @Override
     public Optional<Aluguel> buscarPorPlaca(String placa) {
         return alugueis.values().stream()
-                .filter(aluguel -> aluguel.getVeiculos().stream()
-                        .anyMatch(veiculo -> aluguel.getPlaca().equals(placa)))
+                .filter(aluguel -> aluguel.getVeiculo().equals(placa))
                 .findFirst();
     }
 

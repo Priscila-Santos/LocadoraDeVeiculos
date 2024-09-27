@@ -4,15 +4,11 @@ import Model.Agencia.Agencia;
 import Model.Pessoa.Cliente;
 import Model.Veiculo.GrupoVeiculo;
 import Model.Veiculo.Veiculo;
-
-import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 public class Aluguel <T extends Veiculo<? extends GrupoVeiculo>, P extends Cliente> {
-    private T veiculos;
+    private T veiculo;
     private P pessoa;
     private Agencia agencia;
     private Agencia agenciaDevolucao;
@@ -20,7 +16,7 @@ public class Aluguel <T extends Veiculo<? extends GrupoVeiculo>, P extends Clien
     private LocalDateTime dataDevolucao;
 
     public Aluguel(T veiculo, P pessoa, Agencia agencia, Agencia agenciaDevolucao, LocalDateTime dataAluguel, LocalDateTime dataDevolucao) {
-        this.veiculos = veiculos;
+        this.veiculo = veiculo;
         this.pessoa = pessoa;
         this.agencia = agencia;
         this.agenciaDevolucao = agenciaDevolucao;
@@ -29,11 +25,11 @@ public class Aluguel <T extends Veiculo<? extends GrupoVeiculo>, P extends Clien
     }
 
     public T getVeiculo() {
-        return veiculos;
+        return veiculo;
     }
 
     public void setVeiculo(T veiculo) {
-        this.veiculos = veiculo;
+        this.veiculo = veiculo;
     }
 
     public P getPessoa() {
@@ -77,11 +73,11 @@ public class Aluguel <T extends Veiculo<? extends GrupoVeiculo>, P extends Clien
     }
 
     public List<Veiculo> getVeiculos() {
-        return (List<Veiculo>) veiculos;
+        return (List<Veiculo>) veiculo;
     }
 
     public void setVeiculos(List<Veiculo> veiculos) {
-        this.veiculos = (T) veiculos;
+        this.veiculo = (T) veiculos;
     }
 
     public String getId() {
@@ -89,6 +85,6 @@ public class Aluguel <T extends Veiculo<? extends GrupoVeiculo>, P extends Clien
     }
 
     public String getPlaca(){
-        return  null;
+        return  veiculo.getPlaca();
     }
 }
