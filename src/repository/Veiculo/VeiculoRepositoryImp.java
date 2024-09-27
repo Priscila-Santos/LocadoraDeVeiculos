@@ -1,10 +1,10 @@
-package repository.Veiculo;
+package Repository.Veiculo;
 
 import Model.Veiculo.Veiculo;
 
 import java.util.*;
 
-public class RepositorioVeiculoImpl implements RepositorioVeiculo {
+public class VeiculoRepositoryImp implements VeiculoRepository {
     private List<Veiculo> veiculos = new ArrayList<>();
 
 //    protected void atualizar(Veiculo veiculoParaEditar) throws VeiculoNaoEncontradoException {

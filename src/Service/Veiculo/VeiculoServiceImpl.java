@@ -1,15 +1,16 @@
 package Service.Veiculo;
 
 import Model.Veiculo.Veiculo;
+import Repository.Veiculo.VeiculoRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 public class VeiculoServiceImpl implements VeiculoService {
-    private final repository.Veiculo.VeiculoRepository veiculoRepository;
+    private final VeiculoRepository veiculoRepository;
 
     // Construtor que recebe o repositório como parâmetro
-    public VeiculoServiceImpl(repository.Veiculo.VeiculoRepository veiculoRepository) {
+    public VeiculoServiceImpl(VeiculoRepository veiculoRepository) {
         this.veiculoRepository = veiculoRepository;
     }
 
