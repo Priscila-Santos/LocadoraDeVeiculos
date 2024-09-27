@@ -2,8 +2,14 @@ package Model.Agencia;
 
 public class Agencia {
     private String id;
-    String nome;
-    String endereco;
+    private String nome;
+    private String endereco;
+
+    public Agencia (String id, String nome, String endereco) {
+        this.id = id;
+        this.nome = nome;
+        this.endereco = endereco;
+    }
 
     public String getId() {
         return id;
