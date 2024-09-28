@@ -110,10 +110,10 @@ public class AgenciaView {
     }
     private void buscarAgenciaPorNome() {
         String nome = ScannerUtil.lerString("Digite o nome da agência: ");
-        Optional<Agencia> agenciaOpt = agenciaService.buscarPorNome(nome);
+        Optional<Agencia> agenciaProcurada = agenciaService.buscarPorNome(nome);
 
-        if (agenciaOpt.isPresent()) {
-            Agencia agencia = agenciaOpt.get();
+        if (agenciaProcurada.isPresent()) {
+            Agencia agencia = agenciaProcurada.get();
             System.out.println("Agência encontrada: " + agencia.getNome() + ", Endereço: " +
                     agencia.getEndereco().getLogradouro() + ", " + agencia.getEndereco().getNumero() + " - " +
                     agencia.getEndereco().getCidade() + "/" + agencia.getEndereco().getUF() + " - " +
@@ -125,10 +125,10 @@ public class AgenciaView {
 
     private void buscarAgenciaPorLogradouro() {
         String logradouro = ScannerUtil.lerString("Digite o logradouro da agência: ");
-        Optional<Agencia> agenciaOpt = agenciaService.buscarPorLogradouro(logradouro);
+        Optional<Agencia> agenciaProcurada = agenciaService.buscarPorLogradouro(logradouro);
 
-        if (agenciaOpt.isPresent()) {
-            Agencia agencia = agenciaOpt.get();
+        if (agenciaProcurada.isPresent()) {
+            Agencia agencia = agenciaProcurada.get();
             System.out.println("Agência encontrada: " + agencia.getNome() + ", Endereço: " +
                     agencia.getEndereco().getLogradouro() + ", " + agencia.getEndereco().getNumero() + " - " +
                     agencia.getEndereco().getCidade() + "/" + agencia.getEndereco().getUF() + " - " +
