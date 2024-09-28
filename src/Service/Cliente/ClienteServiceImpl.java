@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClienteServiceImpl implements ClienteService {
-    private List<Cliente> clientes;
+    private final List<Cliente> clientes;
 
     public ClienteServiceImpl() {
         this.clientes = new ArrayList<>();
