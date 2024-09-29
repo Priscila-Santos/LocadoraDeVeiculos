@@ -1,7 +1,6 @@
 package Model.Veiculo;
 
 import java.math.BigDecimal;
-import java.util.Random;
 import java.util.UUID;
 
 public abstract class Veiculo<T extends GrupoVeiculo> {
@@ -35,31 +34,57 @@ public abstract class Veiculo<T extends GrupoVeiculo> {
     }
 
 
-    public String getId() { return id; }
+    public String getId() {
+        return id;
+    }
 
-    public String getPlaca() { return placa; }
+    public String getPlaca() {
+        return placa;
+    }
 
-    public void setPlaca(String placa) { this.placa = placa; }
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
 
-    public String getModelo() { return modelo; }
+    public String getModelo() {
+        return modelo;
+    }
 
-    public void setModelo(String modelo) { this.modelo = modelo; }
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
 
-    public String getMarca() { return marca; }
+    public String getMarca() {
+        return marca;
+    }
 
-    public void setMarca(String marca) { this.marca = marca; }
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
 
-    public int getAnoFabricacao() { return anoFabricacao; }
+    public int getAnoFabricacao() {
+        return anoFabricacao;
+    }
 
-    public void setAnoFabricacao(int anoFabricacao) { this.anoFabricacao = anoFabricacao; }
+    public void setAnoFabricacao(int anoFabricacao) {
+        this.anoFabricacao = anoFabricacao;
+    }
 
-    public Boolean getDisponivel() { return disponivel; }
+    public Boolean getDisponivel() {
+        return disponivel;
+    }
 
-    public void setDisponivel(Boolean disponivel) { this.disponivel = disponivel; }
+    public void setDisponivel(Boolean disponivel) {
+        this.disponivel = disponivel;
+    }
 
-    public T getGrupoVeiculo() { return grupo; }
+    public T getGrupoVeiculo() {
+        return grupo;
+    }
 
-    public void setGrupoVeiculo(T grupo) { this.grupo = grupo; }
+    public void setGrupoVeiculo(T grupo) {
+        this.grupo = grupo;
+    }
 
     public abstract TipoVeiculo getTipoVeiculo();
 }

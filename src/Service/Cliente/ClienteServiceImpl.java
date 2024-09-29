@@ -24,7 +24,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public void editarCliete(Cliente clienteAtualizado) {
+    public void editarCliente(Cliente clienteAtualizado) {
         Optional<Cliente> clienteExistente = buscarPorNome(clienteAtualizado.getNome());
 
         if (clienteExistente.isPresent()) {
@@ -57,7 +57,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public void removerCliente(Cliente cliente) {
+    public void removerCliente(String cliente) {
         if (clientes.contains(cliente)) {
             clientes.remove(cliente);
             System.out.println("Cliente removido com sucesso.");
@@ -65,5 +65,5 @@ public class ClienteServiceImpl implements ClienteService {
             System.out.println("Cliente não encontrado.");
         }
     }
-    }
+}
 }

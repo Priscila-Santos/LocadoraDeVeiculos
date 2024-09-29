@@ -1,9 +1,9 @@
 package Service.Aluguel;
 
+import Model.Aluguel.Devolucao;
 import Model.Pessoa.Cliente;
 import Model.Veiculo.GrupoVeiculo;
 import Model.Veiculo.Veiculo;
-import Model.Aluguel.Devolucao;
 
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
@@ -25,7 +25,7 @@ public class DevolucaoServiceImpl<T extends Veiculo<? extends GrupoVeiculo>, P e
     }
 
     @Override
-    public BigDecimal calcularValorAluguel(){
+    public BigDecimal calcularValorAluguel() {
         AluguelSeviceImpl<?, ?> aluguelSevice = new AluguelSeviceImpl<>(devolucao.getAluguel());
         BigDecimal valorTotalAluguel = aluguelSevice.calcularValorAluguel();
         BigDecimal taxaAtraso = calcularTaxaAtraso();
@@ -36,16 +36,16 @@ public class DevolucaoServiceImpl<T extends Veiculo<? extends GrupoVeiculo>, P e
     @Override
     public String gerarComprovante() {
         return String.format("""
-                ========== Comprovante de Devolução ==========
-                Veiculo: %s
-                Cliente: %s
-                Agencia de Devolução: %s
-                Data de Aluguel: %s
-                Data de Devolucao Prevista: %s
-                Data de Devolucao Final: %s
-                Valor da Taxa de Atraso: %s
-                Valor Total do Aluguel: %s
-                """,
+                        ========== Comprovante de Devolução ==========
+                        Veiculo: %s
+                        Cliente: %s
+                        Agencia de Devolução: %s
+                        Data de Aluguel: %s
+                        Data de Devolucao Prevista: %s
+                        Data de Devolucao Final: %s
+                        Valor da Taxa de Atraso: %s
+                        Valor Total do Aluguel: %s
+                        """,
                 devolucao.getAluguel().getVeiculo().getGrupoVeiculo(),
                 devolucao.getAluguel().getPessoa().getNome(),
                 devolucao.getAluguel().getAgencia().getNome(),

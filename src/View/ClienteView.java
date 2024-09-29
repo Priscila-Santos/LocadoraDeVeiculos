@@ -1,6 +1,7 @@
 package View;
 
 import Model.Pessoa.Cliente;
+import Model.Pessoa.PessoaFisica;
 import Model.Pessoa.TipoCliente;
 import Service.Cliente.ClienteService;
 import Utils.ScannerUtil;
@@ -52,28 +53,58 @@ public class ClienteView {
     }
 
     private void cadastrarCliente() {
-        String nome = ScannerUtil.lerString("Digite o nome do cliente: ");
-        String telefone = ScannerUtil.lerString("Digite o telefone do cliente: ");
-        String email = ScannerUtil.lerString("Digite o email do cliente: ");
-        String tipoClienteString = ScannerUtil.lerString("Digite o tipo de cliente (PF ou PJ): ");
+        TipoCliente tipo = escolherTipoCliente();
+        if (tipo != null) {
+            String nome = ScannerUtil.lerString("Digite o nome do cliente: ");
+            String telefone = ScannerUtil.lerString("Digite o telefone do cliente: ");
+            String email = ScannerUtil.lerString("Digite o email do cliente: ");
 
-        TipoCliente tipoCliente = TipoCliente.valueOf(tipoClienteString.toUpperCase());
+            Cliente cliente;
+            switch (tipo) {
+                case PESSOA_FISICA:
+                    String cpf = ScannerUtil.lerString("Digite o CPF do cliente: ");
+                    cliente = new PessoaFisica(nome, telefone, email, cpf);
+                    break;
+                case PESSOA_JURIDICA:
+                    String cnpj = ScannerUtil.lerString("Digite o cnpj do cliente: ");
+                    cliente = new PessoaFisica(nome, telefone, email, cnpj);
+                    break;
+                default:
+                    System.out.println("Tipo de cliente inválido.");
+                    return;
+            }
 
-        Cliente cliente = new Cliente(nome, telefone, email, tipoCliente) {
-        };
+            clienteService.cadastrar(cliente);
 
-        clienteService.cadastrar(cliente);
+            System.out.println("Cliente cadastrado com sucesso: ");
+            System.out.println("Nome: " + cliente.getNome());
+            System.out.println("Telefone: " + cliente.getTelefone());
+            System.out.println("Email: " + cliente.getEmail());
+            System.out.println("Tipo: " + cliente.getTipo());
+        }
+    }
 
-        System.out.println("Cliente cadastrado com sucesso: ");
-        System.out.println("Nome: " + cliente.getNome());
-        System.out.println("Telefone: " + cliente.getTelefone());
-        System.out.println("Email: " + cliente.getEmail());
-        System.out.println("Tipo: " + cliente.getTipo());
+
+    private TipoCliente escolherTipoCliente() {
+        System.out.println("Escolha o tipo do cliente:");
+        for (TipoCliente tipo : TipoCliente.values()) {
+            System.out.println(tipo.ordinal() + 1 + ". " + tipo);
+        }
+
+        int n = ScannerUtil.lerInteiro("Digite o número correspondente ao tipo do cliente: ");
+
+        try {
+            return TipoCliente.values()[n - 1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Opção inválida.");
+            return null;
+        }
     }
 
     private void editarCliente() {
+
         String nome = ScannerUtil.lerString("Digite o nome do cliente a ser editado: ");
-        Optional<Cliente> clienteProcurado = clienteService.buscarPorNome(nome);
+        Optional<Cliente> clienteProcurado = Optional.ofNullable(clienteService.buscarPorNome(nome));
 
         if (clienteProcurado.isPresent()) {
             Cliente cliente = clienteProcurado.get();
@@ -81,7 +112,7 @@ public class ClienteView {
             String novoNome = ScannerUtil.lerString("Digite o novo nome do cliente: ");
             String novoTelefone = ScannerUtil.lerString("Digite o novo telefone: ");
             String novoEmail = ScannerUtil.lerString("Digite o novo email: ");
-            String novoTipoClienteString = ScannerUtil.lerString("Digite o novo tipo de cliente (PF ou PJ): ");
+            String novoTipoClienteString = String.valueOf(escolherTipoCliente());
 
             TipoCliente tipoClienteAtualizado = TipoCliente.valueOf(novoTipoClienteString.toUpperCase());
 
@@ -95,6 +126,7 @@ public class ClienteView {
         } else {
             System.out.println("Cliente não encontrado.");
         }
+
     }
 
     private void removerCliente() {
@@ -104,7 +136,7 @@ public class ClienteView {
 
     private void buscarClientePorNome() {
         String nome = ScannerUtil.lerString("Digite o nome do cliente: ");
-        Optional<Cliente> clienteProcurado = clienteService.buscarPorNome(nome);
+        Optional<Cliente> clienteProcurado = Optional.ofNullable(clienteService.buscarPorNome(nome));
 
         if (clienteProcurado.isPresent()) {
             Cliente cliente = clienteProcurado.get();

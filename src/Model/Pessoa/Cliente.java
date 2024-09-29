@@ -53,4 +53,8 @@ public abstract class Cliente {
         return tipo;
     }
 
+    public void setTipo(TipoCliente tipo){
+        this.tipo = tipo;
+    }
+
 }

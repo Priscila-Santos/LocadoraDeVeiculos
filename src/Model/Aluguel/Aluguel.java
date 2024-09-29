@@ -8,7 +8,7 @@ import Model.Veiculo.Veiculo;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class Aluguel <T extends Veiculo<? extends GrupoVeiculo>, P extends Cliente> {
+public class Aluguel<T extends Veiculo<? extends GrupoVeiculo>, P extends Cliente> {
     private T veiculo;
     private P pessoa;
     private Agencia agencia;

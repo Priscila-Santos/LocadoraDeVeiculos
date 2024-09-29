@@ -7,7 +7,7 @@ import Model.Veiculo.Veiculo;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class Devolucao <T extends Veiculo<? extends GrupoVeiculo>, P extends Cliente>{
+public class Devolucao<T extends Veiculo<? extends GrupoVeiculo>, P extends Cliente> {
     private Aluguel<T, P> aluguel;
     private LocalDateTime dataDeDevolucaoFinal;
 

@@ -1,7 +1,5 @@
 package Model.Pessoa;
 
-import Model.Pessoa.Cliente;
-
 public class PessoaFisica extends Cliente {
 
     private String cpf;

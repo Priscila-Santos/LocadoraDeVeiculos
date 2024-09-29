@@ -3,8 +3,6 @@ package Model.Veiculo.Carro;
 import Model.Veiculo.TipoVeiculo;
 import Model.Veiculo.Veiculo;
 
-import java.math.BigDecimal;
-
 public class Carro extends Veiculo<GrupoCarro> {
 
     public Carro(String placa, String modelo, String marca, int anoFabricacao, Boolean disponivel, GrupoCarro grupo) {

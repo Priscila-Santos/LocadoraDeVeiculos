@@ -1,6 +1,5 @@
 package Repository.Aluguel;
 
-import Model.Veiculo.Veiculo;
 import Model.Aluguel.Aluguel;
 
 import java.util.HashMap;
@@ -27,7 +26,7 @@ public class AluguelRepositoryImp implements AluguelRepository {
     }
 
     @Override
-    public Optional<Veiculo> buscarPorPlaca(String placa) {
+    public Optional<Aluguel> buscarPorPlaca(String placa) {
         return null;
     }
 

@@ -5,7 +5,7 @@ import Service.Cliente.ClienteService;
 import Service.Veiculo.VeiculoService;
 import Utils.ScannerUtil;
 
-public class ViewPrincipal{
+public class ViewPrincipal {
     private final VeiculoService veiculoService;
     private final VeiculosView veiculosView;
     private final AgenciaService agenciaService;

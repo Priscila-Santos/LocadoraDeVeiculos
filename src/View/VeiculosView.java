@@ -9,8 +9,8 @@ import Model.Veiculo.Moto.GrupoMoto;
 import Model.Veiculo.Moto.Moto;
 import Model.Veiculo.TipoVeiculo;
 import Model.Veiculo.Veiculo;
-import service.VeiculoService;
-import utils.ScannerUtil;
+import Service.Veiculo.VeiculoService;
+import Utils.ScannerUtil;
 
 import java.util.Optional;
 
@@ -63,7 +63,7 @@ public class VeiculosView {
     }
 
     private void cadastrarVeiculo() {
-        TipoVeiculo tipo = escolherTipoVeiculo();  // Usando o enum de tipo de veículo
+        TipoVeiculo tipo = escolherTipoVeiculo();
 
         if (tipo != null) {
             GrupoVeiculo grupo = escolherGrupoPorTipo(tipo);
@@ -77,7 +77,6 @@ public class VeiculosView {
 
                 Veiculo veiculo;
 
-                //Instanciando as subclasses com base no TipoVeiculo, já que Veiculo é abstrata
                 switch (tipo) {
                     case CARRO:
                         veiculo = new Carro(placa, modelo, marca, anoFabricacao, true, (GrupoCarro) grupo);
@@ -93,7 +92,7 @@ public class VeiculosView {
                         return;
                 }
 
-                veiculoService.cadastrar(veiculo);  // Passando o veículo para o serviço cadastrar
+                veiculoService.cadastrar(veiculo);
             }
         }
     }
@@ -119,13 +118,13 @@ public class VeiculosView {
 
         switch (tipo) {
             case CARRO:
-                grupos = GrupoCarro.values();  // Obtém os grupos do enum GrupoCarro
+                grupos = GrupoCarro.values();
                 break;
             case MOTO:
-                grupos = GrupoMoto.values();  // Obtém os grupos do enum GrupoMoto
+                grupos = GrupoMoto.values();
                 break;
             case CAMINHAO:
-                grupos = GrupoCaminhao.values();  // Obtém os grupos do enum GrupoCaminhao
+                grupos = GrupoCaminhao.values();
                 break;
             default:
                 return null;

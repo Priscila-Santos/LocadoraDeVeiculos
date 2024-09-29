@@ -1,7 +1,5 @@
 package Model.Pessoa;
 
-import Model.Pessoa.Cliente;
-
 public class PessoaJuridica extends Cliente {
 
     private String cnpj;

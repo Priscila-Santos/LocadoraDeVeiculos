@@ -2,7 +2,10 @@ package Repository.Veiculo;
 
 import Model.Veiculo.Veiculo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class VeiculoRepositoryImp implements VeiculoRepository {
     private List<Veiculo> veiculos = new ArrayList<>();

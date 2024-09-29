@@ -3,9 +3,9 @@ import Repository.Agencia.AgenciaRepositoryImpl;
 import Repository.Veiculo.VeiculoRepository;
 import Repository.Veiculo.VeiculoRepositoryImp;
 import Service.Agencia.AgenciaServiceImpl;
-import View.ViewPrincipal;
 import Service.Cliente.ClienteServiceImpl;
 import Service.Veiculo.VeiculoServiceImpl;
+import View.ViewPrincipal;
 
 public class Main {
     public static void main(String[] args) {

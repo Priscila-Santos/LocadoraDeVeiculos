@@ -108,7 +108,7 @@ public class AgenciaView {
     }
 
 
-    private void removerAgencia(){
+    private void removerAgencia() {
         String nome = ScannerUtil.lerString("Digite o nome da agência:");
         agenciaService.removerAgencia(nome);
     }

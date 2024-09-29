@@ -1,6 +1,7 @@
 package Model.Veiculo.Moto;
 
 import Model.Veiculo.GrupoVeiculo;
+
 import java.math.BigDecimal;
 
 public enum GrupoMoto implements GrupoVeiculo {
