@@ -1,20 +1,25 @@
 package View;
 
+import Service.Agencia.AgenciaService;
 import Service.Cliente.ClienteService;
 import Service.Veiculo.VeiculoService;
 import Utils.ScannerUtil;
 
 public class ViewPrincipal{
     private final VeiculoService veiculoService;
-    //private final ClienteService clienteService;
     private final VeiculosView veiculosView;
+    private final AgenciaService agenciaService;
+    private final AgenciaView agenciaView;
+    //private final ClienteService clienteService;
     //private final MenuClientes menuClientes;
     ///private final MenuAluguel menuAluguel;
 
-    public ViewPrincipal(VeiculoService veiculoService, ClienteService clienteService) {
+    public ViewPrincipal(VeiculoService veiculoService, ClienteService clienteService, AgenciaService agenciaService) {
         this.veiculoService = veiculoService;
-        //this.clienteService = clienteService;
         this.veiculosView = new VeiculosView(veiculoService);
+        this.agenciaService = agenciaService;
+        this.agenciaView = new AgenciaView(agenciaService);
+        //this.clienteService = clienteService;
         //this.menuClientes = new MenuClientes(clienteService);
         //this.menuAluguel = new MenuAluguel(aluguelService, veiculoService);
     }
@@ -36,7 +41,7 @@ public class ViewPrincipal{
                     veiculosView.exibirVeiculosView();
                     break;
                 case 2:
-                    // Implementar MenuAgencias
+                    agenciaView.exibirAgenciaView();
                     break;
                 case 3:
                     //menuClientes.exibirMenuClientes();

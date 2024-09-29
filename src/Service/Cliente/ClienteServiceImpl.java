@@ -4,6 +4,7 @@ import Model.Pessoa.Cliente;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ClienteServiceImpl implements ClienteService {
     private final List<Cliente> clientes;
@@ -19,6 +20,17 @@ public class ClienteServiceImpl implements ClienteService {
             System.out.println("Cliente cadastrado com sucesso.");
         } else {
             System.out.println("Cliente já está cadastrado.");
+        }
+    }
+
+    @Override
+    public void editarCliete(Cliente clienteAtualizado) {
+        Optional<Cliente> clienteExistente = buscarPorNome(clienteAtualizado.getNome());
+
+        if (clienteExistente.isPresent()) {
+            clienteRepository.editar(clienteAtualizado);
+        } else {
+            System.out.println("Agência não encontrada.");
         }
     }
 
@@ -52,5 +64,6 @@ public class ClienteServiceImpl implements ClienteService {
         } else {
             System.out.println("Cliente não encontrado.");
         }
+    }
     }
 }

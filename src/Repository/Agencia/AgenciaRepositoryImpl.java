@@ -5,16 +5,31 @@ import Model.Agencia.Agencia;
 import java.util.*;
 
 public class AgenciaRepositoryImpl implements AgenciaRepository {
-    private List<Agencia> agencias = new ArrayList<>();
+    private final List<Agencia> agencias = new ArrayList<>();
 
-
+    @Override
     public void salvar(Agencia agencia) {
         agencias.add(agencia);
     }
 
     @Override
-    public void editar(Agencia agencia) {
+    public void editar(Agencia agenciaAtualizada) {
+        for (int i = 0; i < agencias.size(); i++) {
+            Agencia agencia = agencias.get(i);
 
+            if (agencia.getId().equals(agenciaAtualizada.getId())) {
+                agencias.set(i, agenciaAtualizada);
+                System.out.println("Agência editada com sucesso.");
+                return;
+            }
+        }
+        System.out.println("Agência não encontrada para edição.");
+    }
+
+
+    @Override
+    public void remover(Agencia agencia) {
+        agencias.remove(agencia);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package Repository.Aluguel;
 
 import Model.Aluguel.Aluguel;
-import repository.Repositorio;
+import Repository.Repositorio;
 
 import java.util.Optional;
 

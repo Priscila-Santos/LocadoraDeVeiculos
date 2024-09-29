@@ -5,7 +5,6 @@ import Repository.Agencia.AgenciaRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 public class AgenciaServiceImpl implements AgenciaService {
     private final AgenciaRepository agenciaRepository;
@@ -17,7 +16,7 @@ public class AgenciaServiceImpl implements AgenciaService {
     @Override
     public void cadastrar(Agencia agencia) {
         Optional<Agencia> agenciaExistente = buscarPorNome(agencia.getNome());
-        if (!agenciaExistente.isPresent()) {
+        if (agenciaExistente.isPresent()) {
             agenciaRepository.salvar(agencia);
             System.out.println("Agência cadastrada com sucesso.");
         } else {
@@ -57,22 +56,22 @@ public class AgenciaServiceImpl implements AgenciaService {
     }
 
     @Override
-    public void removerAgencia(Agencia agencia) {
-        agenciaRepository.
+    public void removerAgencia(String nome) {
+        Optional<Agencia> agenciaExistente = buscarPorNome(nome);
+        if (agenciaExistente.isPresent()) {
+            agenciaRepository.remover(agenciaExistente.get());
+            System.out.println("Agência removida com sucesso.");
+        } else {
+            System.out.println("Agência não encontrada.");
+        }
     }
 
     @Override
-    public void editarAgencia(String nome, Agencia agenciaAtualizada) {
-        Optional<Agencia> procurarAgencia = agenciaRepository.listarTodas()
-                .stream()
-                .filter(agencia -> agencia.getNome().equalsIgnoreCase(nome))
-                .findFirst();
+    public void editarAgencia(Agencia agenciaAtualizada) {
+        Optional<Agencia> agenciaExistente = buscarPorNome(agenciaAtualizada.getNome());
 
-        if (procurarAgencia.isPresent()) {
-            Agencia agenciaAtual = procurarAgencia.get();
-            agenciaAtual.setNome(agenciaAtualizada.getNome());
-            agenciaAtual.setEndereco(agenciaAtualizada.getEndereco());
-            System.out.println("Agência editada com sucesso.");
+        if (agenciaExistente.isPresent()) {
+            agenciaRepository.editar(agenciaAtualizada);
         } else {
             System.out.println("Agência não encontrada.");
         }

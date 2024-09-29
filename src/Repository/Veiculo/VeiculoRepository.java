@@ -1,7 +1,7 @@
 package Repository.Veiculo;
 
 import Model.Veiculo.Veiculo;
-import repository.Repositorio;
+import Repository.Repositorio;
 import java.util.Optional;
 
 public interface VeiculoRepository extends Repositorio<Veiculo, String> {

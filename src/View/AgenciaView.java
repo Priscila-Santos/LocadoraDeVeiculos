@@ -20,10 +20,11 @@ public class AgenciaView {
             System.out.println("\n===== Menu de Agências =====");
             System.out.println("1. Cadastrar Agência");
             System.out.println("2. Editar Agência");
-            System.out.println("3. Buscar Agência por Nome");
-            System.out.println("4. Buscar Agência por Endereço");
-            System.out.println("5. Listar Todas as Agências");
-            System.out.println("6. Voltar ao Menu Principal");
+            System.out.println("3. Remover Agência");
+            System.out.println("4. Buscar Agência por Nome");
+            System.out.println("5. Buscar Agência por Endereço");
+            System.out.println("6. Listar Todas as Agências");
+            System.out.println("7. Voltar ao Menu Principal");
             System.out.println("=============================\n");
 
             int opcao = ScannerUtil.lerInteiro("Escolha uma opção: ");
@@ -36,15 +37,18 @@ public class AgenciaView {
                     editarAgencia();
                     break;
                 case 3:
-                    buscarAgenciaPorNome();
+                    removerAgencia();
                     break;
                 case 4:
-                    buscarAgenciaPorLogradouro();
+                    buscarAgenciaPorNome();
                     break;
                 case 5:
-                    listarAgencias();
+                    buscarAgenciaPorLogradouro();
                     break;
                 case 6:
+                    listarAgencias();
+                    break;
+                case 7:
                     return;
                 default:
                     System.out.println("Opção inválida.");
@@ -76,38 +80,39 @@ public class AgenciaView {
                 + agencia.getEndereco().getCEP());
     }
 
-    private void editarAgencia(){
-        String nome = ScannerUtil.lerString("Digite o nome da agência que deseja editar: ");
+    private void editarAgencia() {
+        String nome = ScannerUtil.lerString("Digite o nome da agência a ser editada: ");
+        Optional<Agencia> agenciaProcurada = agenciaService.buscarPorNome(nome);
 
-        Optional<Agencia> procurarAgencia = agenciaService.buscarPorNome(nome);
+        if (agenciaProcurada.isPresent()) {
+            Agencia agencia = agenciaProcurada.get();
 
-        if (procurarAgencia.isPresent()) {
-            Agencia agenciaExistente = procurarAgencia.get();
+            String novoNome = ScannerUtil.lerString("Digite o novo nome da agência: ");
+            String novoLogradouro = ScannerUtil.lerString("Digite o novo logradouro: ");
+            int novoNumero = ScannerUtil.lerInteiro("Digite o novo número: ");
+            String novaCidade = ScannerUtil.lerString("Digite a nova cidade: ");
+            String novoUf = ScannerUtil.lerString("Digite o novo UF: ");
+            String novoCep = ScannerUtil.lerString("Digite o novo CEP: ");
 
-            String novoNome = ScannerUtil.lerString("Digite o novo nome da agência (ou pressione Enter para manter " + agenciaExistente.getNome() + "): ");
-            String logradouro = ScannerUtil.lerString("Digite o novo logradouro da agência (ou pressione Enter para manter " + agenciaExistente.getEndereco().getLogradouro() + "): ");
-            int numero = ScannerUtil.lerInteiro("Digite o novo número (ou pressione Enter para manter " + agenciaExistente.getEndereco().getNumero() + "): ");
-            String cidade = ScannerUtil.lerString("Digite a nova cidade (ou pressione Enter para manter " + agenciaExistente.getEndereco().getCidade() + "): ");
-            String ufString = ScannerUtil.lerString("Digite o novo UF (sigla do estado) (ou pressione Enter para manter " + agenciaExistente.getEndereco().getUF() + "): ");
-            String cep = ScannerUtil.lerString("Digite o novo CEP (ou pressione Enter para manter " + agenciaExistente.getEndereco().getCEP() + "): ");
+            UF ufAtualizado = UF.valueOf(novoUf.toUpperCase());
+            Endereco enderecoAtualizado = new Endereco(novoLogradouro, novoNumero, novaCidade, ufAtualizado, novoCep);
 
-            Endereco novoEndereco = new Endereco(
-                    logradouro.isEmpty() ? agenciaExistente.getEndereco().getLogradouro() : logradouro,
-                    numero == 0 ? agenciaExistente.getEndereco().getNumero() : numero,
-                    cidade.isEmpty() ? agenciaExistente.getEndereco().getCidade() : cidade,
-                    ufString.isEmpty() ? agenciaExistente.getEndereco().getUF() : UF.valueOf(ufString.toUpperCase()),
-                    cep.isEmpty() ? agenciaExistente.getEndereco().getCEP() : cep
-            );
+            agencia.setNome(novoNome);
+            agencia.setEndereco(enderecoAtualizado);
 
-            Agencia agenciaAtualizada = new Agencia(agenciaExistente.getId(),
-                    novoNome.isEmpty() ? agenciaExistente.getNome() : novoNome,
-                    novoEndereco);
+            agenciaService.editarAgencia(agencia);
 
-            agenciaService.editarAgencia(agenciaExistente.getNome(), agenciaAtualizada);
         } else {
             System.out.println("Agência não encontrada.");
         }
     }
+
+
+    private void removerAgencia(){
+        String nome = ScannerUtil.lerString("Digite o nome da agência:");
+        agenciaService.removerAgencia(nome);
+    }
+
     private void buscarAgenciaPorNome() {
         String nome = ScannerUtil.lerString("Digite o nome da agência: ");
         Optional<Agencia> agenciaProcurada = agenciaService.buscarPorNome(nome);
