@@ -1,7 +1,18 @@
 package View;
 
-import Service.Veiculo.VeiculoService;
-import Utils.ScannerUtil;
+import Model.Veiculo.Caminhao.Caminhao;
+import Model.Veiculo.Caminhao.GrupoCaminhao;
+import Model.Veiculo.Carro.Carro;
+import Model.Veiculo.Carro.GrupoCarro;
+import Model.Veiculo.GrupoVeiculo;
+import Model.Veiculo.Moto.GrupoMoto;
+import Model.Veiculo.Moto.Moto;
+import Model.Veiculo.TipoVeiculo;
+import Model.Veiculo.Veiculo;
+import service.VeiculoService;
+import utils.ScannerUtil;
+
+import java.util.Optional;
 
 public class VeiculosView {
     private final VeiculoService veiculoService;
@@ -18,28 +29,32 @@ public class VeiculosView {
             System.out.println("3. Buscar Veículo por Placa");
             System.out.println("4. Buscar Veículos por Tipo");
             System.out.println("5. Listar Todos os Veículos");
-            System.out.println("6. Voltar ao Menu Principal");
+            System.out.println("6. Remover Veículo");
+            System.out.println("7. Voltar ao Menu Principal");
             System.out.println("=============================\n");
 
             int opcao = ScannerUtil.lerInteiro("Escolha uma opção: ");
 
             switch (opcao) {
                 case 1:
-                    //cadastrarVeiculo();
+                    cadastrarVeiculo();
                     break;
                 case 2:
-                    //editarVeiculo();
+                    editarVeiculo();
                     break;
                 case 3:
-                    //buscarVeiculoPorPlaca();
+                    buscarVeiculoPorPlaca();
                     break;
                 case 4:
-                    //buscarVeiculosPorTipo();
+                    buscarVeiculosPorTipo();
                     break;
                 case 5:
-                    listarVeiculos();  // Chamando o método para listar todos os veículos
+                    listarVeiculos();
                     break;
                 case 6:
+                    removerVeiculo();
+                    break;
+                case 7:
                     return; // Voltar ao menu principal
                 default:
                     System.out.println("Opção inválida.");
@@ -47,78 +62,164 @@ public class VeiculosView {
         }
     }
 
-//    private void cadastrarVeiculo() {
-//        Veiculo.Tipo tipo = escolherTipoVeiculo();  // Usando o enum de tipo de veículo
-//
-//        if (tipo != null) {
-//            String placa = ScannerUtil.lerString("Digite a placa do veículo: ");
-//            String modelo = ScannerUtil.lerString("Digite o modelo do veículo: ");
-//
-//            Veiculo veiculo = new Veiculo(null, tipo, placa);  // Criando o objeto Veiculo com os dados capturados
-//            veiculo.setModelo(modelo);
-//            veiculoService.cadastrar(veiculo);  // Passando o veículo para o serviço cadastrar
-//        }
-//    }
-//
-//    private void editarVeiculo() {
-//        String placa = ScannerUtil.lerString("Digite a placa do veículo que deseja editar: ");
-//        Veiculo veiculo = veiculoService.buscarPorPlaca(placa).orElse(null);
-//
-//        if (veiculo == null) {
-//            System.out.println("Veículo não encontrado.");
-//            return;
-//        }
-//
-//        Veiculo.Tipo novoTipo = escolherTipoVeiculo();  // Selecionando novo tipo
-//
-//        if (novoTipo != null) {
-//            String novoModelo = ScannerUtil.lerString("Digite o novo modelo: ");
-//            veiculo.setTipo(novoTipo);
-//            veiculo.setModelo(novoModelo);
-//            veiculoService.editar(veiculo);  // Passando o veículo editado para o serviço editar
-//        }
-//    }
+    private void cadastrarVeiculo() {
+        TipoVeiculo tipo = escolherTipoVeiculo();  // Usando o enum de tipo de veículo
 
-//    private void buscarVeiculoPorPlaca() {
-//        String placa = ScannerUtil.lerString("Digite a placa do veículo: ");
-//        Veiculo veiculo = veiculoService.buscarPorPlaca(placa).orElse(null);
-//
-//        if (veiculo != null) {
-//            System.out.println(veiculo);  // Exibindo o veículo com o novo toString
-//        } else {
-//            System.out.println("Veículo não encontrado.");
-//        }
-//    }
+        if (tipo != null) {
+            GrupoVeiculo grupo = escolherGrupoPorTipo(tipo);
 
-//    private void buscarVeiculosPorTipo() {
-//        Veiculo.Tipo tipo = escolherTipoVeiculo();  // Selecionando tipo de veículo
-//
-//        if (tipo != null) {
-//            veiculoService.buscarPorTipo(tipo).forEach(System.out::println);  // Listando veículos encontrados por tipo
-//        }
-//    }
 
-    private void listarVeiculos() {
-        System.out.println("/=== Lista de todos os veículos cadastrados ===/");
+            if (tipo != null) {
+                String placa = ScannerUtil.lerString("Digite a placa do veículo: ");
+                String modelo = ScannerUtil.lerString("Digite o modelo do veículo: ");
+                String marca = ScannerUtil.lerString("Digite a marca do veículo: ");
+                int anoFabricacao = ScannerUtil.lerInteiro("Digite o ano de fabricação: ");
 
-        veiculoService.listarTodos().forEach(veiculo -> {
-            System.out.println(veiculo);
-        });
+                Veiculo veiculo;
+
+                //Instanciando as subclasses com base no TipoVeiculo, já que Veiculo é abstrata
+                switch (tipo) {
+                    case CARRO:
+                        veiculo = new Carro(placa, modelo, marca, anoFabricacao, true, (GrupoCarro) grupo);
+                        break;
+                    case MOTO:
+                        veiculo = new Moto(placa, modelo, marca, anoFabricacao, true, (GrupoMoto) grupo);
+                        break;
+                    case CAMINHAO:
+                        veiculo = new Caminhao(placa, modelo, marca, anoFabricacao, true, (GrupoCaminhao) grupo);
+                        break;
+                    default:
+                        System.out.println("Tipo de veículo inválido");
+                        return;
+                }
+
+                veiculoService.cadastrar(veiculo);  // Passando o veículo para o serviço cadastrar
+            }
+        }
     }
 
-//    private Veiculo.Tipo escolherTipoVeiculo() {
-//        System.out.println("Escolha o tipo de veículo:");
-//        for (Veiculo.Tipo tipo : Veiculo.Tipo.values()) {
-//            System.out.println(tipo.ordinal() + 1 + ". " + tipo);
-//        }
-//
-//        int n = ScannerUtil.lerInteiro("Digite o número correspondente ao tipo de veículo: ");
-//
-//        try {
-//            return Veiculo.Tipo.values()[n - 1];
-//        } catch (ArrayIndexOutOfBoundsException e) {
-//            System.out.println("Opção inválida.");
-//            return null;
-//        }
-//    }
+    private TipoVeiculo escolherTipoVeiculo() {
+        System.out.println("Escolha o tipo de veículo:");
+        for (TipoVeiculo tipo : TipoVeiculo.values()) {
+            System.out.println(tipo.ordinal() + 1 + ". " + tipo);
+        }
+
+        int n = ScannerUtil.lerInteiro("Digite o número correspondente ao tipo de veículo: ");
+
+        try {
+            return TipoVeiculo.values()[n - 1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Opção inválida.");
+            return null;
+        }
+    }
+
+    private GrupoVeiculo escolherGrupoPorTipo(TipoVeiculo tipo) {
+        GrupoVeiculo[] grupos;
+
+        switch (tipo) {
+            case CARRO:
+                grupos = GrupoCarro.values();  // Obtém os grupos do enum GrupoCarro
+                break;
+            case MOTO:
+                grupos = GrupoMoto.values();  // Obtém os grupos do enum GrupoMoto
+                break;
+            case CAMINHAO:
+                grupos = GrupoCaminhao.values();  // Obtém os grupos do enum GrupoCaminhao
+                break;
+            default:
+                return null;
+        }
+
+        System.out.println("Escolha o grupo de " + tipo + ":");
+        for (int i = 0; i < grupos.length; i++) {
+            System.out.println((i + 1) + ". " + grupos[i]);
+        }
+
+        int opcao = ScannerUtil.lerInteiro("Digite o número correspondente ao grupo de veículo: ");
+
+        try {
+            return grupos[opcao - 1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Opção inválida.");
+            return null;
+        }
+    }
+
+    private void editarVeiculo() {
+        String placa = ScannerUtil.lerString("Digite a placa do veículo que deseja editar: ");
+        Optional<Veiculo> veiculoOptional = veiculoService.buscarPorPlaca(placa);
+
+        if (veiculoOptional.isPresent()) {
+            Veiculo veiculo = veiculoOptional.get();
+            String novoModelo = ScannerUtil.lerString("Digite o novo modelo do veículo: ");
+            String novaMarca = ScannerUtil.lerString("Digite a nova marca do veículo: ");
+            int novoAnoFabricacao = ScannerUtil.lerInteiro("Digite o novo ano de fabricação: ");
+
+            // Atualizando dados
+            veiculo.setModelo(novoModelo);
+            veiculo.setMarca(novaMarca);
+            veiculo.setAnoFabricacao(novoAnoFabricacao);
+
+            veiculoService.editar(veiculo);
+            System.out.println("Veículo atualizado com sucesso.");
+        } else {
+            System.out.println("Veículo com a placa " + placa + " não encontrado.");
+        }
+    }
+
+    private void buscarVeiculoPorPlaca() {
+        String placa = ScannerUtil.lerString("Digite a placa do veículo: ");
+        Optional<Veiculo> veiculoOptional = veiculoService.buscarPorPlaca(placa);
+
+        if (veiculoOptional.isPresent()) {
+            Veiculo veiculo = veiculoOptional.get();
+            System.out.println("Veículo encontrado:");
+            exibirDetalhesVeiculo(veiculo);
+        } else {
+            System.out.println("Veículo com a placa " + placa + " não encontrado.");
+        }
+    }
+
+    private void buscarVeiculosPorTipo() {
+        TipoVeiculo tipo = escolherTipoVeiculo();
+
+        if (tipo != null) {
+            veiculoService.buscarPorTipo(tipo).forEach(this::exibirDetalhesVeiculo);
+        }
+    }
+
+    private void listarVeiculos() {
+        System.out.println("\n/=== Lista de todos os veículos cadastrados ===/");
+
+        veiculoService.listarTodos().forEach(this::exibirDetalhesVeiculo);
+        System.out.println("/=== Fim da lista de veículos ===/");
+    }
+
+    private void removerVeiculo() {
+        String placa = ScannerUtil.lerString("digite a placa do veículo que deseja remover: ");
+
+        Optional<Veiculo> veiculoOptional = veiculoService.buscarPorPlaca(placa);
+
+        if (veiculoOptional.isPresent()) {
+            veiculoService.remover(placa);
+            //Utils exibir sucesso
+            System.out.println("Veículo de placa " + placa + " foi removido com sucesso");
+        } else {
+            System.out.println("Veículo com a placa " + placa + " não encontrado.");
+        }
+    }
+
+    private void exibirDetalhesVeiculo(Veiculo veiculo) {
+        System.out.println("ID: " + veiculo.getId());
+        System.out.println("Placa: " + veiculo.getPlaca());
+        System.out.println("Modelo: " + veiculo.getModelo());
+        System.out.println("Marca: " + veiculo.getMarca());
+        System.out.println("Ano de Fabricação: " + veiculo.getAnoFabricacao());
+        System.out.println("Disponível: " + (veiculo.getDisponivel() ? "Sim" : "Não"));
+        System.out.println("Grupo: " + veiculo.getGrupoVeiculo());
+        System.out.println("Valor: R$ " + veiculo.getValorGrupo());
+        System.out.println("------------------------------------------");
+    }
 }
+

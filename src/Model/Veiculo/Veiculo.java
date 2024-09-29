@@ -60,4 +60,6 @@ public abstract class Veiculo<T extends GrupoVeiculo> {
     public T getGrupoVeiculo() { return grupo; }
 
     public void setGrupoVeiculo(T grupo) { this.grupo = grupo; }
+
+    public abstract TipoVeiculo getTipoVeiculo();
 }

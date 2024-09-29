@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface Repositorio<T, S>{
     void salvar(T elemento);
-    void remover(String placa);
-    Optional<Veiculo> buscarPorPlaca(String placa);
+    void remover(S placa);
+    Optional<T> buscarPorPlaca(S placa);
     List<T> listarTodos();
 }
