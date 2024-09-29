@@ -1,4 +1,4 @@
-package service;
+package Service.Cliente;
 
 import Model.Pessoa.Cliente;
 

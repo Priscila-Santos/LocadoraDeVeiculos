@@ -1,9 +1,8 @@
 package View;
 
-import service.*;
-import service.ClienteService;
-import service.VeiculoService;
-import utils.ScannerUtil;
+import Service.Cliente.ClienteService;
+import Service.Veiculo.VeiculoService;
+import Utils.ScannerUtil;
 
 public class ViewPrincipal{
     private final VeiculoService veiculoService;

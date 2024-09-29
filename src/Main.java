@@ -1,17 +1,15 @@
-import View.VeiculosView;
+import Repository.Veiculo.VeiculoRepository;
+import Repository.Veiculo.VeiculoRepositoryImp;
 import View.ViewPrincipal;
-import repository.Veiculo.RepositorioVeiculo;
-import repository.Veiculo.RepositorioVeiculoImpl;
-import service.AluguelService;
-import service.ClienteServiceImpl;
-import service.VeiculoServiceImpl;
+import Service.Cliente.ClienteServiceImpl;
+import Service.Veiculo.VeiculoServiceImpl;
 
 public class Main {
     public static void main(String[] args) {
-        RepositorioVeiculo repositorioVeiculo = new RepositorioVeiculoImpl();
+        VeiculoRepository veiculoRepository = new VeiculoRepositoryImp();
 
         // Instanciando os serviços necessários
-        VeiculoServiceImpl veiculoService = new VeiculoServiceImpl(repositorioVeiculo);
+        VeiculoServiceImpl veiculoService = new VeiculoServiceImpl(veiculoRepository);
         ClienteServiceImpl clienteService = new ClienteServiceImpl();
 
         // Iniciando o Menu Principal com os serviços

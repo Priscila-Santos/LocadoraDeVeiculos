@@ -1,6 +1,4 @@
-package service;
-
-import Model.aluguel.Aluguel;
+package Service.Aluguel;
 
 import java.math.BigDecimal;
 

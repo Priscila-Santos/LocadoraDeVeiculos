@@ -3,9 +3,9 @@ package Model.Agencia;
 public class Agencia {
     private String id;
     private String nome;
-    private String endereco;
+    private Endereco endereco;
 
-    public Agencia (String id, String nome, String endereco) {
+    public Agencia (String id, String nome, Endereco endereco) {
         this.id = id;
         this.nome = nome;
         this.endereco = endereco;
@@ -23,11 +23,11 @@ public class Agencia {
         this.nome = nome;
     }
 
-    public String getEndereco() {
+    public Endereco getEndereco() {
         return endereco;
     }
 
-    public void setEndereco(String endereco) {
+    public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
 }

@@ -1,6 +1,5 @@
-package Model.aluguel;
+package Model.Aluguel;
 
-import Model.Agencia.Agencia;
 import Model.Pessoa.Cliente;
 import Model.Veiculo.GrupoVeiculo;
 import Model.Veiculo.Veiculo;
