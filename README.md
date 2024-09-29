@@ -61,7 +61,6 @@ devolução de veículos.
 ### Desafios
 
 - Chamar todos os métodos necessários no menu do pacote `view`.
-- Simular um banco de dados através de um arquivo TXT, utilizando o `Scanner` através do método utilitário criado para
   simular informações passadas por um usuário.
 
 ### Soluções
@@ -77,7 +76,7 @@ devolução de veículos.
 ### Melhorias Futuras
 
 - Implementar uma interface gráfica para melhorar a interação com o usuário.
-- Integrar com um banco de dados real para maior robustez e escalabilidade.
+- Integrar com um banco de dados para maior robustez e escalabilidade.
 
 ## Princípios SOLID Aplicados
 

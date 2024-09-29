@@ -1,19 +1,42 @@
 package Service.Aluguel;
 
+import Model.Aluguel.Aluguel;
 import Model.Aluguel.Devolucao;
 import Model.Pessoa.Cliente;
 import Model.Veiculo.GrupoVeiculo;
 import Model.Veiculo.Veiculo;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Optional;
 
 public class DevolucaoServiceImpl<T extends Veiculo<? extends GrupoVeiculo>, P extends Cliente> implements AluguelService {
     private Devolucao<T, P> devolucao;
+    private List<Aluguel<T, P>> alugueis;
 
-    public DevolucaoServiceImpl(Devolucao<T, P> devolucao) {
-        this.devolucao = devolucao;
-        this.devolucao.getAluguel().getVeiculo().setDisponivel(true);
+    public DevolucaoServiceImpl(List<Aluguel<T, P>> alugueis) {
+        //this.devolucao = devolucao;
+        this.alugueis = alugueis;
+        //this.devolucao.getAluguel().getVeiculo().setDisponivel(true);
+    }
+
+    public void registrarDevolucao(String placa, String nomeCliente, String documentoCliente, LocalDateTime dataDevolucaoFinal, String nomeAgencia){
+        Optional<Aluguel<T, P>> aluguelOpt = alugueis.stream()
+                        .filter(aluguel -> aluguel
+                        .getVeiculo().getPlaca().equalsIgnoreCase(placa) &&
+                        !aluguel.getVeiculo().getDisponivel()).findFirst();
+        if(aluguelOpt.isPresent()){
+            Aluguel<T, P> aluguel = aluguelOpt.get();
+            T veiculo = aluguel.getVeiculo();
+            veiculo.setDisponivel(true);
+
+            devolucao = new Devolucao<>(dataDevolucaoFinal,aluguel, BigDecimal.ZERO);
+
+        } else {
+            throw new RuntimeException("Erro: Veículo com placa " + placa + " não encontrado ou não está alugado.");
+        }
     }
 
     public BigDecimal calcularTaxaAtraso() {
