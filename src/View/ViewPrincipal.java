@@ -22,7 +22,7 @@ public class ViewPrincipal{
     public void exibirViewPrincipal() {
         while (true) {
             System.out.println("\n===== Menu Principal =====");
-            System.out.println("1. Gerenciar Veículos");
+            System.out.println("1. Gerenciar Veículos"); // ok
             System.out.println("2. Gerenciar Agências");
             System.out.println("3. Gerenciar Clientes");
             System.out.println("4. Aluguel & Devolução");
@@ -36,13 +36,13 @@ public class ViewPrincipal{
                     veiculosView.exibirVeiculosView();
                     break;
                 case 2:
-                    // Implementar MenuAgencias
+                    // Implementar ViewAgencias
                     break;
                 case 3:
-                    //menuClientes.exibirMenuClientes();
+                    //Implementar  ViewClientes
                     break;
                 case 4:
-                    //menuAluguel.exibirMenuAluguel();
+                    //Implementar ViewAluguel
                     break;
                 case 5:
                     System.out.println("Encerrando...");
