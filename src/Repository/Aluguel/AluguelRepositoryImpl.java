@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class AluguelRepositoryImp implements AluguelRepository {
+public class AluguelRepositoryImpl implements AluguelRepository {
     private Map<String, Aluguel> aluguel = new HashMap<>();
 
     @Override

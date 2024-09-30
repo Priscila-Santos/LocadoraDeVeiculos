@@ -1,27 +1,20 @@
 package View;
 
-import Model.Agencia.Agencia;
-import Model.Aluguel.Aluguel;
-import Model.Aluguel.Devolucao;
-import Model.Pessoa.Cliente;
-import Model.Veiculo.GrupoVeiculo;
-import Model.Veiculo.Veiculo;
-import Service.Aluguel.AluguelService;
 import Service.Aluguel.DevolucaoServiceImpl;
-import Service.Veiculo.VeiculoService;
 import Utils.ScannerUtil;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class DevolucaoView {
+public class AluguelView {
+    // Implementar Um só serviço para aluguel e devolução.
     private final DevolucaoServiceImpl devolucaoService;
 
-    public DevolucaoView(DevolucaoServiceImpl devolucaoService) {
+    public AluguelView(DevolucaoServiceImpl devolucaoService) {
         this.devolucaoService = devolucaoService;
     }
 
-    public void exibirDevolucaoView() {
+    public void exibirAluguelView() {
         while (true) {
             System.out.println("\n===== Menu de Devolução de Veículos =====");
             System.out.println("1. Registrar Devolução");

@@ -53,4 +53,8 @@ public class ScannerUtil {
     public static void exibirErro(String mensagem) {
         System.out.println("Erro: " + mensagem);
     }
+
+    public static void exibirInvalido(String mensagem) {
+        System.out.println("Inválido: " + mensagem);
+    }
 }

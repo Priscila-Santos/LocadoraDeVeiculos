@@ -1,27 +1,23 @@
 package View;
 
+import Model.Pessoa.Cliente;
 import Service.Agencia.AgenciaService;
+import Service.Aluguel.AluguelService;
 import Service.Cliente.ClienteService;
 import Service.Veiculo.VeiculoService;
 import Utils.ScannerUtil;
 
 public class ViewPrincipal {
-    private final VeiculoService veiculoService;
     private final VeiculosView veiculosView;
-    private final AgenciaService agenciaService;
     private final AgenciaView agenciaView;
-    //private final ClienteService clienteService;
-    //private final MenuClientes menuClientes;
-    ///private final MenuAluguel menuAluguel;
+    private final ClienteView clienteView;
+    //private final AluguelView aluguelView;
 
-    public ViewPrincipal(VeiculoService veiculoService, ClienteService clienteService, AgenciaService agenciaService) {
-        this.veiculoService = veiculoService;
+    public ViewPrincipal(VeiculoService veiculoService, AgenciaService agenciaService, ClienteService clienteService) {
         this.veiculosView = new VeiculosView(veiculoService);
-        this.agenciaService = agenciaService;
         this.agenciaView = new AgenciaView(agenciaService);
-        //this.clienteService = clienteService;
-        //this.menuClientes = new MenuClientes(clienteService);
-        //this.menuAluguel = new MenuAluguel(aluguelService, veiculoService);
+        this.clienteView = new ClienteView(clienteService);
+        //this.aluguelView = new AluguelView(aluguelService);
     }
 
     public void exibirViewPrincipal() {
@@ -44,16 +40,16 @@ public class ViewPrincipal {
                     agenciaView.exibirAgenciaView();
                     break;
                 case 3:
-                    //menuClientes.exibirMenuClientes();
+                    clienteView.exibirClienteView();
                     break;
                 case 4:
-                    //menuAluguel.exibirMenuAluguel();
+                    //aluguelView.exibirAluguelView();
                     break;
                 case 5:
                     System.out.println("Encerrando...");
                     return;
                 default:
-                    System.out.println("Opção inválida.");
+                    ScannerUtil.exibirErro(" opção inválida.");
             }
         }
     }

@@ -1,54 +1,57 @@
 package Service.Cliente;
 
 import Model.Pessoa.Cliente;
-
-import java.util.ArrayList;
+import Repository.Cliente.ClienteRepository;
+import Utils.ScannerUtil;
 import java.util.List;
-import java.util.Optional;
 
 public class ClienteServiceImpl implements ClienteService {
-    private final List<Cliente> clientes;
+    private final ClienteRepository clienteRepository;
 
-    public ClienteServiceImpl() {
-        this.clientes = new ArrayList<>();
+    public ClienteServiceImpl(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
     }
 
     @Override
     public void cadastrar(Cliente cliente) {
-        if (!clientes.contains(cliente)) {
-            clientes.add(cliente);
-            System.out.println("Cliente cadastrado com sucesso.");
+        Cliente clienteExistente = clienteRepository.getById(cliente.getId());
+        if (clienteExistente == null) {
+            clienteRepository.salvar(cliente);
+            ScannerUtil.exibirSucesso("Cliente cadastrado.");
         } else {
-            System.out.println("Cliente já está cadastrado.");
+            ScannerUtil.exibirInvalido("Cliente com ID " + cliente.getId() + " já existe.");
         }
     }
 
     @Override
-    public void editarCliente(Cliente clienteAtualizado) {
-        Optional<Cliente> clienteExistente = buscarPorNome(clienteAtualizado.getNome());
-
-        if (clienteExistente.isPresent()) {
-            clienteRepository.editar(clienteAtualizado);
+    public void editarCliente(Cliente cliente) {
+        Cliente clienteExistente = clienteRepository.getById(cliente.getId());
+        if (clienteExistente != null) {
+            clienteRepository.editar(cliente);
+            ScannerUtil.exibirSucesso("Cliente editado.");
         } else {
-            System.out.println("Agência não encontrada.");
+            ScannerUtil.exibirInvalido("Agência não encontrada.");
         }
     }
 
     @Override
-    public Cliente buscarPorNome(String nome) {
-        for (Cliente cliente : clientes) {
-            if (cliente.getNome().equalsIgnoreCase(nome)) {
-                return cliente;
-            }
+    public List<Cliente> buscarPorNome(String nome) {
+        List<Cliente> clientes = clienteRepository.procurarPeloNome(nome);
+
+        if (clientes.isEmpty()) {
+            ScannerUtil.exibirInvalido("Nenhum cliente encontrado com o nome: " + nome);
+            } else {
+            ScannerUtil.exibirSucesso(clientes.size() + " cliente(s) encontrado(s) com o nome: " + nome);
+            clientes.forEach(cliente -> System.out.println("Nome: " + cliente.getNome()));
         }
-        System.out.println("Cliente não encontrado.");
-        return null;
+        return clientes;
     }
 
     @Override
     public void listarClientes() {
+        List<Cliente> clientes = clienteRepository.listarTodas();
         if (clientes.isEmpty()) {
-            System.out.println("Nenhum cliente cadastrado.");
+            ScannerUtil.exibirInvalido(" nenhum cliente cadastrado.");
         } else {
             for (Cliente cliente : clientes) {
                 System.out.println(cliente);
@@ -57,12 +60,13 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public void removerCliente(String cliente) {
-        if (clientes.contains(cliente)) {
-            clientes.remove(cliente);
-            System.out.println("Cliente removido com sucesso.");
+    public void removerCliente(String idCliente) {
+        Cliente cliente = clienteRepository.getById(idCliente);
+        if (cliente != null) {
+            clienteRepository.remover(cliente);
+            ScannerUtil.exibirSucesso(" cliente removido.");
         } else {
-            System.out.println("Cliente não encontrado.");
+            ScannerUtil.exibirInvalido(" cliente com ID " + idCliente + " não encontrado.");
         }
     }
 }
