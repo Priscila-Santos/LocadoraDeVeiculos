@@ -1,5 +1,6 @@
 package Service.Veiculo;
 
+import Model.Veiculo.TipoVeiculo;
 import Model.Veiculo.Veiculo;
 import Repository.Veiculo.VeiculoRepository;
 
@@ -26,8 +27,14 @@ public class VeiculoServiceImpl implements VeiculoService {
     }
 
     @Override
-    public Optional<Optional<Veiculo>> buscarPorPlaca(String placa) {
-        return Optional.empty();
+    public void remover(String placa) {
+
+    }
+
+
+    @Override
+    public List<Veiculo> buscarPorTipo(TipoVeiculo tipo) {
+        return List.of();
     }
 
     @Override
