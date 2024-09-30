@@ -87,4 +87,9 @@ public abstract class Veiculo<T extends GrupoVeiculo> {
     }
 
     public abstract TipoVeiculo getTipoVeiculo();
+
+    @Override
+    public String toString() {
+        return "Veículo [ID: " + id + ", Tipo: " + getTipoVeiculo() + ", Grupo: " + grupo + ", Modelo: " + modelo + ", Placa: " + placa + ", Disponibilidade: " + disponivel + "]";
+    }
 }

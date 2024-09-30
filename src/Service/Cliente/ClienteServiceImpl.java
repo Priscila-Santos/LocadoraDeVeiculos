@@ -52,7 +52,7 @@ public class ClienteServiceImpl implements ClienteService {
     public List<Cliente> listarClientes() {
         List<Cliente> clientes = clienteRepository.listarTodas();
         if (clientes.isEmpty()) {
-            ScannerUtil.exibirInvalido(" nenhum cliente cadastrado.");
+            ScannerUtil.exibirInvalido("Nenhum cliente cadastrado.");
         } else {
             for (Cliente cliente : clientes) {
                 System.out.println(cliente);

@@ -116,13 +116,14 @@ public class AgenciaView {
     private void buscarAgenciaPorNome() {
         String nome = ScannerUtil.lerString("Digite o nome da agência: ");
         Optional<Agencia> agenciaProcurada = agenciaService.buscarPorNome(nome);
+        System.out.println(agenciaProcurada);
 
         if (agenciaProcurada.isPresent()) {
-            Agencia agencia = agenciaProcurada.get();
-            System.out.println("Agência encontrada: " + agencia.getNome() + ", Endereço: " +
-                    agencia.getEndereco().getLogradouro() + ", " + agencia.getEndereco().getNumero() + " - " +
-                    agencia.getEndereco().getCidade() + "/" + agencia.getEndereco().getUF() + " - " +
-                    agencia.getEndereco().getCEP());
+            Optional<Agencia> agencia = Optional.of(agenciaProcurada.get());
+            System.out.println("Agência encontrada: " + agencia.get().getNome() + ", Endereço: " +
+                    agencia.get().getEndereco().getLogradouro() + ", " + agencia.get().getEndereco().getNumero() + " - " +
+                    agencia.get().getEndereco().getCidade() + "/" + agencia.get().getEndereco().getUF() + " - " +
+                    agencia.get().getEndereco().getCEP());
         } else {
             System.out.println("Agência não encontrada.");
         }

@@ -7,7 +7,7 @@ import Repository.Aluguel.DevolucaoRepositoryImpl;
 import Repository.Cliente.ClienteRepository;
 import Repository.Cliente.ClienteRepositoryImpl;
 import Repository.Veiculo.VeiculoRepository;
-import Repository.Veiculo.VeiculoRepositoryImp;
+import Repository.Veiculo.VeiculoRepositoryImpl;
 import Service.Agencia.AgenciaServiceImpl;
 import Service.Aluguel.AluguelServiceImpl;
 import Service.Aluguel.DevolucaoServiceImpl;
@@ -18,7 +18,7 @@ import View.ViewPrincipal;
 public class Main {
     public static void main(String[] args) {
 
-        VeiculoRepository veiculoRepository = new VeiculoRepositoryImp();
+        VeiculoRepository veiculoRepository = new VeiculoRepositoryImpl();
         ClienteRepository clienteRepository = new ClienteRepositoryImpl();
         AgenciaRepository agenciaRepository = new AgenciaRepositoryImpl();
         AluguelRepository aluguelRepository = new AluguelRepositoryImpl();

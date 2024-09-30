@@ -17,7 +17,7 @@ public class AgenciaServiceImpl implements AgenciaService {
     @Override
     public void cadastrar(Agencia agencia) {
         Optional<Agencia> agenciaExistente = buscarPorNome(agencia.getNome());
-        if (agenciaExistente.isPresent()) {
+        if (agenciaExistente.isEmpty()) {
             agenciaRepository.salvar(agencia);
             System.out.println("Agência cadastrada com sucesso.");
         } else {
@@ -27,12 +27,14 @@ public class AgenciaServiceImpl implements AgenciaService {
 
     @Override
     public Optional<Agencia> buscarPorNome(String nome) {
-        return agenciaRepository.listarTodas()
-                .stream()
-                .filter(agencia -> agencia.getNome().contains(nome))
+        String nomeLowerCase = nome.toLowerCase();
+        List<Agencia> agencias = agenciaRepository.listarTodas();
+        agencias.forEach(agencia -> System.out.println(agencia.getNome()));
+
+        return agencias.stream()
+                .filter(agencia -> agencia.getNome().toLowerCase().contains(nomeLowerCase))
                 .findFirst();
     }
-
     @Override
     public Optional<Agencia> buscarPorLogradouro(String logradouro) {
         return agenciaRepository.listarTodas()

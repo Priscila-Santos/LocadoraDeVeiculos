@@ -15,7 +15,6 @@ import Utils.ScannerUtil;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -152,8 +151,6 @@ public class AluguelView {
         }
     }
 
-
-
     private void registrarAluguel() {
         System.out.println("\n--- Registrar Aluguel ---");
         try {
@@ -164,35 +161,34 @@ public class AluguelView {
                 return;
             }
 
-
             Optional<Veiculo> veiculoOpt = selecionarVeiculo();
-            if (veiculoOpt == null || !veiculoOpt.isPresent()) {
+            if (veiculoOpt.isEmpty()) {
                 System.out.println("Veículo não encontrado ou indisponível. Operação cancelada.");
                 return;
             }
             Veiculo veiculo = veiculoOpt.get();
 
-
             Optional<Agencia> agenciaAluguelOpt = selecionarAgencia("aluguel");
-            if (agenciaAluguelOpt == null || !agenciaAluguelOpt.isPresent()) {
+            if (agenciaAluguelOpt.isEmpty()) {
                 System.out.println("Agência de aluguel não encontrada. Operação cancelada.");
                 return;
             }
             Agencia agenciaAluguel = agenciaAluguelOpt.get();
 
-
             Optional<Agencia> agenciaDevolucaoOpt = selecionarAgencia("devolução");
-            if (agenciaDevolucaoOpt == null || !agenciaDevolucaoOpt.isPresent()) {
+            if (agenciaDevolucaoOpt.isEmpty()) {
                 System.out.println("Agência de devolução não encontrada. Operação cancelada.");
                 return;
             }
             Agencia agenciaDevolucao = agenciaDevolucaoOpt.get();
 
-
+            // Usando a data atual
             LocalDateTime dataAluguel = LocalDateTime.now();
+
+            // Utilizando ScannerUtil para ler e formatar a data de devolução
             LocalDateTime dataDevolucao = ScannerUtil.lerLocalDateTime("Digite a data prevista para devolução (dd/MM/yyyy): ");
 
-
+            // Criando o aluguel
             Aluguel aluguel = new Aluguel(
                     veiculo,
                     cliente,
@@ -202,15 +198,12 @@ public class AluguelView {
                     dataDevolucao
             );
 
-
             aluguelService.cadastrarAluguel(aluguel);
 
-
+            // Gerar comprovante
             String comprovante = aluguelService.gerarComprovante(aluguel);
             System.out.println(comprovante);
 
-        } catch (DateTimeParseException e) {
-            System.out.println("Formato de data inválido. Tente novamente.");
         } catch (Exception e) {
             System.out.println("Erro ao registrar aluguel: " + e.getMessage());
         }
@@ -220,11 +213,32 @@ public class AluguelView {
         System.out.println("\n--- Selecionar Cliente ---");
         listarClientes();
         String nomeCliente = ScannerUtil.lerString("Digite o nome do cliente: ");
-        Cliente cliente = (Cliente) clienteService.buscarPorNome(nomeCliente);
-        if (cliente == null) {
-            ScannerUtil.exibirInvalido("Cliente com ID " + nomeCliente + " não encontrado.");
+
+        List<Cliente> clientesEncontrados = clienteService.buscarPorNome(nomeCliente);
+
+        if (clientesEncontrados.isEmpty()) {
+            ScannerUtil.exibirInvalido("Nenhum cliente encontrado com o nome: " + nomeCliente);
+            return null;
         }
-        return cliente;
+
+        else if (clientesEncontrados.size() == 1) {
+            return clientesEncontrados.get(0);
+        }
+
+        else {
+            System.out.println("Mais de um cliente encontrado com esse nome. Selecione um cliente:");
+            for (int i = 0; i < clientesEncontrados.size(); i++) {
+                System.out.println((i + 1) + ". " + clientesEncontrados.get(i).getNome());
+            }
+            int opcao = ScannerUtil.lerInteiro("Escolha um cliente (número): ");
+
+            if (opcao > 0 && opcao <= clientesEncontrados.size()) {
+                return clientesEncontrados.get(opcao - 1);
+            } else {
+                System.out.println("Opção inválida. Operação cancelada.");
+                return null;
+            }
+        }
     }
 
     private Optional<Veiculo> selecionarVeiculo() {
@@ -232,13 +246,13 @@ public class AluguelView {
         listarVeiculosDisponiveis();
         String placa = ScannerUtil.lerString("Digite a placa do veículo: ");
         Optional<Veiculo> veiculo = veiculoService.buscarPorPlaca(placa);
-        if (veiculo == null) {
+        if (veiculo.isEmpty()) {
             ScannerUtil.exibirInvalido("Veículo com placas " + placa + " não encontrado.");
-            return null;
+            return Optional.empty();
         }
         if (!veiculo.get().getDisponivel()) {
             ScannerUtil.exibirInvalido("Veículo com placas " + placa + " está indisponível.");
-            return null;
+            return Optional.empty();
         }
         return veiculo;
     }
@@ -248,8 +262,8 @@ public class AluguelView {
         listarAgencias();
         String nomeAgencia = ScannerUtil.lerString("Digite o nome da agência de " + tipo + ": ");
         Optional<Agencia> agencia = agenciaService.buscarPorNome(nomeAgencia);
-        if (agencia == null) {
-            ScannerUtil.exibirInvalido("Agência com ID " + nomeAgencia + " não encontrada.");
+        if (agencia.isEmpty()) {
+            ScannerUtil.exibirInvalido("Agência com o nome " + nomeAgencia + " não encontrada.");
         }
         return agencia;
     }
@@ -264,19 +278,15 @@ public class AluguelView {
                 return;
             }
 
-
             System.out.println("Dados atuais do aluguel:");
             System.out.println(aluguel);
 
-
+            // Ler nova data e usar o método de ScannerUtil para formatar corretamente
             LocalDateTime novaDataDevolucao = ScannerUtil.lerLocalDateTime("Digite a nova data prevista para devolução (dd/MM/yyyy): ");
             aluguel.setDataDevolucao(novaDataDevolucao);
 
-
             aluguelService.editarAluguel(aluguel);
 
-        } catch (DateTimeParseException e) {
-            System.out.println("Formato de data inválido. Tente novamente.");
         } catch (Exception e) {
             System.out.println("Erro ao editar aluguel: " + e.getMessage());
         }
@@ -316,21 +326,17 @@ public class AluguelView {
         System.out.println(comprovante);
     }
 
-
-
     private void registrarDevolucao() {
         System.out.println("\n--- Registrar Devolução ---");
         try {
-
             Aluguel<Veiculo<GrupoVeiculo>, Cliente> aluguel = selecionarAluguel();
             if (aluguel == null) {
                 System.out.println("Aluguel não encontrado ou já devolvido. Operação cancelada.");
                 return;
             }
 
-
+            // Ler a data de devolução final usando ScannerUtil
             LocalDateTime dataDevolucaoFinal = ScannerUtil.lerLocalDateTime("Digite a data final de devolução (dd/MM/yyyy): ");
-
 
             Devolucao devolucao = new Devolucao(
                     dataDevolucaoFinal,
@@ -338,22 +344,15 @@ public class AluguelView {
                     BigDecimal.ZERO
             );
 
-
             devolucaoService.registrarDevolucao(devolucao);
 
-
             BigDecimal valorTotal = devolucaoService.calcularValorAluguel(devolucao);
-
-
             devolucao.setValorAluguelFinal(valorTotal);
             devolucaoService.editarDevolucao(devolucao);
-
 
             String comprovanteDevolucao = devolucaoService.gerarComprovante(devolucao);
             System.out.println(comprovanteDevolucao);
 
-        } catch (DateTimeParseException e) {
-            System.out.println("Formato de data inválido. Tente novamente.");
         } catch (Exception e) {
             System.out.println("Erro ao registrar devolução: " + e.getMessage());
         }
@@ -369,23 +368,17 @@ public class AluguelView {
                 return;
             }
 
-
             System.out.println("Dados atuais da devolução:");
             System.out.println(devolucao);
-
 
             LocalDateTime novaDataDevolucaoFinal = ScannerUtil.lerLocalDateTime("Digite a nova data final de devolução (dd/MM/yyyy): ");
             devolucao.setDataDeDevolucaoFinal(novaDataDevolucaoFinal);
 
-
             BigDecimal valorTotal = devolucaoService.calcularValorAluguel(devolucao);
             devolucao.setValorAluguelFinal(valorTotal);
 
-
             devolucaoService.editarDevolucao(devolucao);
 
-        } catch (DateTimeParseException e) {
-            System.out.println("Formato de data inválido. Tente novamente.");
         } catch (Exception e) {
             System.out.println("Erro ao editar devolução: " + e.getMessage());
         }
@@ -434,9 +427,7 @@ public class AluguelView {
             return;
         }
 
-
         BigDecimal valorTotal = devolucaoService.calcularValorAluguel(devolucao);
-
 
         Aluguel<Veiculo<GrupoVeiculo>, Cliente> aluguel = devolucao.getVeiculoAluguel();
         long diasAtraso = java.time.temporal.ChronoUnit.DAYS.between(aluguel.getDataDevolucao(), devolucao.getDataDeDevolucaoFinal());
@@ -467,8 +458,6 @@ public class AluguelView {
             ScannerUtil.exibirInvalido("Aluguel com ID " + idAluguel + " não encontrado.");
             return null;
         } else {
-
-
             if (aluguel.getVeiculo().getDisponivel()) {
                 System.out.println("Este aluguel já foi devolvido.");
                 return null;
@@ -476,8 +465,6 @@ public class AluguelView {
         }
         return aluguel;
     }
-
-
 
     private void listarClientes() {
         System.out.println("\n--- Lista de Clientes ---");
