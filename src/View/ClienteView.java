@@ -2,6 +2,7 @@ package View;
 
 import Model.Pessoa.Cliente;
 import Model.Pessoa.PessoaFisica;
+import Model.Pessoa.PessoaJuridica;
 import Model.Pessoa.TipoCliente;
 import Service.Cliente.ClienteService;
 import Utils.ScannerUtil;
@@ -68,7 +69,7 @@ public class ClienteView {
                     break;
                 case PESSOA_JURIDICA:
                     String cnpj = ScannerUtil.lerString("Digite o cnpj do cliente: ");
-                    cliente = new PessoaFisica(nome, telefone, email, cnpj);
+                    cliente = new PessoaJuridica(nome, telefone, email, cnpj);
                     break;
                 default:
                     System.out.println("Tipo de cliente inválido.");
@@ -106,9 +107,43 @@ public class ClienteView {
         String nome = ScannerUtil.lerString("Digite o nome do cliente a ser editado: ");
         List<Cliente> clienteProcurado = clienteService.buscarPorNome(nome);
 
-        if (clienteProcurado.isEmpty()) {
+        if (!clienteProcurado.isEmpty()) {
             Cliente cliente = clienteProcurado.get(0);
-            String novoNome = ScannerUtil.lerString("Digite o novo nome do cliente: ");
+
+            System.out.println("Cliente encontrado: " + cliente.getNome());
+
+            System.out.println("O que você deseja editar?");
+            System.out.println("1. Nome");
+            System.out.println("2. Telefone");
+            System.out.println("3. Email");
+            int opcao = ScannerUtil.lerInteiro("Escolha uma opção: ");
+
+            switch (opcao) {
+                case 1:
+                    String novoNome = ScannerUtil.lerString("Digite o novo nome do cliente: ");
+                    cliente.setNome(novoNome);
+                    break;
+                case 2:
+                    String novoTelefone = ScannerUtil.lerString("Digite o novo telefone do cliente: ");
+                    cliente.setTelefone(novoTelefone);
+                    break;
+                case 3:
+                    String novoEmail = ScannerUtil.lerString("Digite o novo email do cliente: ");
+                    cliente.setEmail(novoEmail);
+                    break;
+                default:
+                    System.out.println("Opção inválida.");
+                    return;
+            }
+
+            clienteService.editarCliente(cliente);
+            System.out.println("Cliente editado com sucesso.");
+        } else {
+            System.out.println("Cliente não encontrado.");
+        }
+
+
+           /* String novoNome = ScannerUtil.lerString("Digite o novo nome do cliente: ");
             String novoTelefone = ScannerUtil.lerString("Digite o novo telefone: ");
             String novoEmail = ScannerUtil.lerString("Digite o novo email: ");
             String novoTipoClienteString = String.valueOf(escolherTipoCliente());
@@ -123,8 +158,7 @@ public class ClienteView {
             System.out.println("Cliente editado com sucesso.");
         } else {
             System.out.println("Cliente não encontrado.");
-        }
-
+        }*/
     }
 
     private void removerCliente() {

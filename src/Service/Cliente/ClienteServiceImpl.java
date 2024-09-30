@@ -60,14 +60,16 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public void removerCliente(String idCliente) {
-        Cliente cliente = clienteRepository.getById(idCliente);
-        if (cliente != null) {
+    public void removerCliente(String nomeCliente) {
+        List<Cliente> clientes = clienteRepository.procurarPeloNome(nomeCliente);
+        if (!clientes.isEmpty()) {
+            Cliente cliente = clientes.get(0); // Supondo que o nome seja único ou pegando o primeiro da lista
             clienteRepository.remover(cliente);
-            ScannerUtil.exibirSucesso(" cliente removido.");
+            ScannerUtil.exibirSucesso("Cliente removido.");
         } else {
-            ScannerUtil.exibirInvalido(" cliente com ID " + idCliente + " não encontrado.");
+            ScannerUtil.exibirInvalido("Cliente com nome " + nomeCliente + " não encontrado.");
         }
     }
+
 }
 
