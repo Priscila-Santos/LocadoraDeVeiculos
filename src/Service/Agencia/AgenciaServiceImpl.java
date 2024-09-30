@@ -2,6 +2,7 @@ package Service.Agencia;
 
 import Model.Agencia.Agencia;
 import Repository.Agencia.AgenciaRepository;
+import Utils.ScannerUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -60,9 +61,9 @@ public class AgenciaServiceImpl implements AgenciaService {
         Optional<Agencia> agenciaExistente = buscarPorNome(nome);
         if (agenciaExistente.isPresent()) {
             agenciaRepository.remover(agenciaExistente.get());
-            System.out.println("Agência removida com sucesso.");
+            ScannerUtil.exibirSucesso("Agência removida com sucesso.");
         } else {
-            System.out.println("Agência não encontrada.");
+            ScannerUtil.exibirInvalido("Agência não encontrada.");
         }
     }
 

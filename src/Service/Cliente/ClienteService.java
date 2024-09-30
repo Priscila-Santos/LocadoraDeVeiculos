@@ -2,14 +2,16 @@ package Service.Cliente;
 
 import Model.Pessoa.Cliente;
 
+import java.util.List;
+
 public interface ClienteService {
     void cadastrar(Cliente cliente);
 
     void editarCliente(Cliente cliente);
 
-    Cliente buscarPorNome(String nome);
+    List<Cliente> buscarPorNome(String nome);
 
     void listarClientes();
 
-    void removerCliente(String cliente);
+    void removerCliente(String idCliente);
 }

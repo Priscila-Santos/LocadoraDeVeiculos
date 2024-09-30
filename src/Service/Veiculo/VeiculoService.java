@@ -15,7 +15,7 @@ public interface VeiculoService {
 
     Optional<Veiculo> buscarPorPlaca(String placa);
 
-    List<Veiculo> buscarPorTipo(TipoVeiculo tipo);
-
     List<Veiculo> listarTodos();
+
+    List<Veiculo> buscarPorTipo(TipoVeiculo tipo);
 }

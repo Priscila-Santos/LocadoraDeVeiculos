@@ -6,6 +6,7 @@ import Model.Pessoa.TipoCliente;
 import Service.Cliente.ClienteService;
 import Utils.ScannerUtil;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ClienteView {
@@ -96,24 +97,21 @@ public class ClienteView {
         try {
             return TipoCliente.values()[n - 1];
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Opção inválida.");
+            ScannerUtil.exibirErro(" opção inválida.");
             return null;
         }
     }
 
     private void editarCliente() {
-
         String nome = ScannerUtil.lerString("Digite o nome do cliente a ser editado: ");
-        Optional<Cliente> clienteProcurado = Optional.ofNullable(clienteService.buscarPorNome(nome));
+        List<Cliente> clienteProcurado = clienteService.buscarPorNome(nome);
 
-        if (clienteProcurado.isPresent()) {
-            Cliente cliente = clienteProcurado.get();
-
+        if (clienteProcurado.isEmpty()) {
+            Cliente cliente = clienteProcurado.get(0);
             String novoNome = ScannerUtil.lerString("Digite o novo nome do cliente: ");
             String novoTelefone = ScannerUtil.lerString("Digite o novo telefone: ");
             String novoEmail = ScannerUtil.lerString("Digite o novo email: ");
             String novoTipoClienteString = String.valueOf(escolherTipoCliente());
-
             TipoCliente tipoClienteAtualizado = TipoCliente.valueOf(novoTipoClienteString.toUpperCase());
 
             cliente.setNome(novoNome);
@@ -136,17 +134,18 @@ public class ClienteView {
 
     private void buscarClientePorNome() {
         String nome = ScannerUtil.lerString("Digite o nome do cliente: ");
-        Optional<Cliente> clienteProcurado = Optional.ofNullable(clienteService.buscarPorNome(nome));
+        List<Cliente> clienteProcurado = clienteService.buscarPorNome(nome);
 
-        if (clienteProcurado.isPresent()) {
-            Cliente cliente = clienteProcurado.get();
-            System.out.println("Cliente encontrado: ");
-            System.out.println("Nome: " + cliente.getNome());
-            System.out.println("Telefone: " + cliente.getTelefone());
-            System.out.println("Email: " + cliente.getEmail());
-            System.out.println("Tipo: " + cliente.getTipo());
+        if (clienteProcurado.isEmpty()) {
+            ScannerUtil.exibirInvalido(" nenhum cliente encontrado com o nome: " + nome);
         } else {
-            System.out.println("Cliente não encontrado.");
+            clienteProcurado.forEach(cliente -> {
+                System.out.println("Cliente encontrado: ");
+                System.out.println("Nome: " + cliente.getNome());
+                System.out.println("Telefone: " + cliente.getTelefone());
+                System.out.println("Email: " + cliente.getEmail());
+                System.out.println("Tipo: " + cliente.getTipo());
+            });
         }
     }
 
