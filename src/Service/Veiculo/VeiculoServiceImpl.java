@@ -23,12 +23,12 @@ public class VeiculoServiceImpl implements VeiculoService {
 
     @Override
     public void editar(Veiculo veiculo) {
-        veiculoRepository.salvar(veiculo); // Atualiza o veículo existente
+        veiculoRepository.salvar(veiculo);
     }
 
     @Override
     public void remover(String placa) {
-        veiculoRepository.remover(placa); // Remove veículo pela placa
+        veiculoRepository.remover(placa);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class VeiculoServiceImpl implements VeiculoService {
     @Override
     public List<Veiculo> buscarPorTipo(TipoVeiculo tipo) {
         return veiculoRepository.listarTodos().stream()
-                .filter(veiculo -> veiculo.getTipoVeiculo().equals(tipo)) // Filtra pelo tipo de veículo
+                .filter(veiculo -> veiculo.getTipoVeiculo().equals(tipo))
                 .collect(Collectors.toList());
     }
 }

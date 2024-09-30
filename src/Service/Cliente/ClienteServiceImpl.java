@@ -3,6 +3,7 @@ package Service.Cliente;
 import Model.Pessoa.Cliente;
 import Repository.Cliente.ClienteRepository;
 import Utils.ScannerUtil;
+
 import java.util.List;
 
 public class ClienteServiceImpl implements ClienteService {
@@ -40,7 +41,7 @@ public class ClienteServiceImpl implements ClienteService {
 
         if (clientes.isEmpty()) {
             ScannerUtil.exibirInvalido("Nenhum cliente encontrado com o nome: " + nome);
-            } else {
+        } else {
             ScannerUtil.exibirSucesso(clientes.size() + " cliente(s) encontrado(s) com o nome: " + nome);
             clientes.forEach(cliente -> System.out.println("Nome: " + cliente.getNome()));
         }
@@ -48,7 +49,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public void listarClientes() {
+    public List<Cliente> listarClientes() {
         List<Cliente> clientes = clienteRepository.listarTodas();
         if (clientes.isEmpty()) {
             ScannerUtil.exibirInvalido(" nenhum cliente cadastrado.");
@@ -57,13 +58,14 @@ public class ClienteServiceImpl implements ClienteService {
                 System.out.println(cliente);
             }
         }
+        return clientes;
     }
 
     @Override
     public void removerCliente(String nomeCliente) {
         List<Cliente> clientes = clienteRepository.procurarPeloNome(nomeCliente);
         if (!clientes.isEmpty()) {
-            Cliente cliente = clientes.get(0); // Supondo que o nome seja único ou pegando o primeiro da lista
+            Cliente cliente = clientes.get(0);
             clienteRepository.remover(cliente);
             ScannerUtil.exibirSucesso("Cliente removido.");
         } else {

@@ -2,6 +2,7 @@ package Service.Agencia;
 
 import Model.Agencia.Agencia;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface AgenciaService {
@@ -11,7 +12,7 @@ public interface AgenciaService {
 
     Optional<Agencia> buscarPorLogradouro(String logradouro);
 
-    void listarAgencias();
+    List<Agencia> listarAgencias();
 
     void removerAgencia(String agencia);
 

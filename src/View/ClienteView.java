@@ -8,7 +8,6 @@ import Service.Cliente.ClienteService;
 import Utils.ScannerUtil;
 
 import java.util.List;
-import java.util.Optional;
 
 public class ClienteView {
     private final ClienteService clienteService;
@@ -143,22 +142,7 @@ public class ClienteView {
         }
 
 
-           /* String novoNome = ScannerUtil.lerString("Digite o novo nome do cliente: ");
-            String novoTelefone = ScannerUtil.lerString("Digite o novo telefone: ");
-            String novoEmail = ScannerUtil.lerString("Digite o novo email: ");
-            String novoTipoClienteString = String.valueOf(escolherTipoCliente());
-            TipoCliente tipoClienteAtualizado = TipoCliente.valueOf(novoTipoClienteString.toUpperCase());
 
-            cliente.setNome(novoNome);
-            cliente.setTelefone(novoTelefone);
-            cliente.setEmail(novoEmail);
-            cliente.setTipo(tipoClienteAtualizado);
-
-            clienteService.editarCliente(cliente);
-            System.out.println("Cliente editado com sucesso.");
-        } else {
-            System.out.println("Cliente não encontrado.");
-        }*/
     }
 
     private void removerCliente() {

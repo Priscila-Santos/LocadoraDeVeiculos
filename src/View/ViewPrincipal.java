@@ -1,8 +1,8 @@
 package View;
 
-import Model.Pessoa.Cliente;
 import Service.Agencia.AgenciaService;
 import Service.Aluguel.AluguelService;
+import Service.Aluguel.DevolucaoService;
 import Service.Cliente.ClienteService;
 import Service.Veiculo.VeiculoService;
 import Utils.ScannerUtil;
@@ -11,13 +11,25 @@ public class ViewPrincipal {
     private final VeiculosView veiculosView;
     private final AgenciaView agenciaView;
     private final ClienteView clienteView;
-    //private final AluguelView aluguelView;
+    private final AluguelView aluguelView;
 
-    public ViewPrincipal(VeiculoService veiculoService, AgenciaService agenciaService, ClienteService clienteService) {
+    public ViewPrincipal(
+            VeiculoService veiculoService,
+            AgenciaService agenciaService,
+            ClienteService clienteService,
+            AluguelService aluguelService,
+            DevolucaoService devolucaoService // Adicionado
+    ) {
         this.veiculosView = new VeiculosView(veiculoService);
         this.agenciaView = new AgenciaView(agenciaService);
         this.clienteView = new ClienteView(clienteService);
-        //this.aluguelView = new AluguelView(aluguelService);
+        this.aluguelView = new AluguelView(
+                devolucaoService,
+                aluguelService,
+                clienteService,
+                veiculoService,
+                agenciaService
+        );
     }
 
     public void exibirViewPrincipal() {
@@ -43,7 +55,7 @@ public class ViewPrincipal {
                     clienteView.exibirClienteView();
                     break;
                 case 4:
-                    //aluguelView.exibirAluguelView();
+                    aluguelView.exibirMenuPrincipal();
                     break;
                 case 5:
                     System.out.println("Encerrando...");

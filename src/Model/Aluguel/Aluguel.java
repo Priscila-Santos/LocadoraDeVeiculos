@@ -9,18 +9,19 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Aluguel<T extends Veiculo<? extends GrupoVeiculo>, P extends Cliente> {
+    private final String id;
     private T veiculo;
     private P pessoa;
     private Agencia agencia;
     private Agencia agenciaDevolucao;
     private LocalDateTime dataAluguel;
     private LocalDateTime dataDevolucao;
-    private String id;
 
-    public Aluguel(T veiculo, P pessoa, Agencia agencia, Agencia agenciaDevolucao, LocalDateTime dataAluguel, LocalDateTime dataDevolucao) {
+    public Aluguel(Veiculo veiculo, Cliente pessoa, Agencia agencia, Agencia agenciaDevolucao,
+                   LocalDateTime dataAluguel, LocalDateTime dataDevolucao) {
         this.id = gerarId();
-        this.veiculo = veiculo;
-        this.pessoa = pessoa;
+        this.veiculo = (T) veiculo;
+        this.pessoa = (P) pessoa;
         this.agencia = agencia;
         this.agenciaDevolucao = agenciaDevolucao;
         this.dataAluguel = dataAluguel;
@@ -30,6 +31,8 @@ public class Aluguel<T extends Veiculo<? extends GrupoVeiculo>, P extends Client
     private String gerarId() {
         return UUID.randomUUID().toString().substring(0, 6);
     }
+
+
 
     public String getId() {
         return id;
@@ -81,5 +84,12 @@ public class Aluguel<T extends Veiculo<? extends GrupoVeiculo>, P extends Client
 
     public void setDataDevolucao(LocalDateTime dataDevolucao) {
         this.dataDevolucao = dataDevolucao;
+    }
+
+    @Override
+    public String toString() {
+        return "Aluguel{id='" + id + "', veiculoId='" + veiculo.getId() + "', cliente='" + pessoa.getNome() +
+                "', agencia='" + agencia.getNome() + "', agenciaDevolucao='" + agenciaDevolucao.getNome() +
+                "', dataAluguel=" + dataAluguel + ", dataDevolucao=" + dataDevolucao + '}';
     }
 }

@@ -42,7 +42,7 @@ public class AgenciaServiceImpl implements AgenciaService {
     }
 
     @Override
-    public void listarAgencias() {
+    public List<Agencia> listarAgencias() {
         List<Agencia> agencias = agenciaRepository.listarTodas();
         if (agencias.isEmpty()) {
             System.out.println("Nenhuma agência cadastrada.");
@@ -54,6 +54,7 @@ public class AgenciaServiceImpl implements AgenciaService {
                         agencia.getEndereco().getCEP());
             }
         }
+        return agencias;
     }
 
     @Override

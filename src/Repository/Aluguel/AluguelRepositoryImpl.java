@@ -1,37 +1,48 @@
+
 package Repository.Aluguel;
 
 import Model.Aluguel.Aluguel;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class AluguelRepositoryImpl implements AluguelRepository {
-    private Map<String, Aluguel> aluguel = new HashMap<>();
+    private final List<Aluguel> alugueis = new ArrayList<>();
 
     @Override
     public void salvar(Aluguel aluguel) {
-        this.aluguel.put(aluguel.getId(), aluguel);
+        alugueis.add(aluguel);
     }
 
     @Override
-    public Optional<Aluguel> buscarPorId(String id) {
-        return Optional.ofNullable(aluguel.get(id));
+    public void editar(Aluguel aluguel) {
+        remover(aluguel);
+        salvar(aluguel);
     }
 
     @Override
-    public void remover(String id) {
-        aluguel.remove(id);
+    public void remover(Aluguel aluguel) {
+        alugueis.removeIf(a -> a.getId().equals(aluguel.getId()));
     }
 
     @Override
-    public Optional<Aluguel> buscarPorPlaca(String placa) {
-        return null;
+    public Aluguel getById(String id) {
+        return alugueis.stream()
+                .filter(aluguel -> aluguel.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
     public List<Aluguel> listarTodos() {
-        return (List<Aluguel>) aluguel.values();
+        return new ArrayList<>(alugueis);
+    }
+
+    @Override
+    public List<Aluguel> procurarPeloNomeCliente(String nomeCliente) {
+        return alugueis.stream()
+                .filter(aluguel -> aluguel.getPessoa().getNome().equalsIgnoreCase(nomeCliente))
+                .collect(Collectors.toList());
     }
 }

@@ -55,7 +55,7 @@ public class VeiculosView {
                     removerVeiculo();
                     break;
                 case 7:
-                    return; // Voltar ao menu principal
+                    return;
                 default:
                     System.out.println("Opção inválida.");
             }
@@ -155,7 +155,7 @@ public class VeiculosView {
             String novaMarca = ScannerUtil.lerString("Digite a nova marca do veículo: ");
             int novoAnoFabricacao = ScannerUtil.lerInteiro("Digite o novo ano de fabricação: ");
 
-            // Atualizando dados
+
             veiculo.setModelo(novoModelo);
             veiculo.setMarca(novaMarca);
             veiculo.setAnoFabricacao(novoAnoFabricacao);
@@ -202,7 +202,7 @@ public class VeiculosView {
 
         if (veiculoOptional.isPresent()) {
             veiculoService.remover(placa);
-            //Utils exibir sucesso
+
             System.out.println("Veículo de placa " + placa + " foi removido com sucesso");
         } else {
             System.out.println("Veículo com a placa " + placa + " não encontrado.");

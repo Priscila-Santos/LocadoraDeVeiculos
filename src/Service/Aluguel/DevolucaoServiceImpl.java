@@ -1,82 +1,145 @@
+
 package Service.Aluguel;
 
 import Model.Aluguel.Aluguel;
 import Model.Aluguel.Devolucao;
-import Model.Pessoa.Cliente;
-import Model.Veiculo.GrupoVeiculo;
-import Model.Veiculo.Veiculo;
+import Model.Pessoa.TipoCliente;
+import Repository.Aluguel.AluguelRepository;
+import Repository.Aluguel.DevolucaoRepository;
+import Utils.ScannerUtil;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 
-public class DevolucaoServiceImpl<T extends Veiculo<? extends GrupoVeiculo>, P extends Cliente> implements AluguelService {
-    private Devolucao<T, P> devolucao;
-    private List<Aluguel<T, P>> alugueis;
+public class DevolucaoServiceImpl implements DevolucaoService {
+    private final DevolucaoRepository devolucaoRepository;
+    private final AluguelRepository aluguelRepository;
 
-    public DevolucaoServiceImpl(List<Aluguel<T, P>> alugueis) {
-        //this.devolucao = devolucao;
-        this.alugueis = alugueis;
-        //this.devolucao.getAluguel().getVeiculo().setDisponivel(true);
+    public DevolucaoServiceImpl(DevolucaoRepository devolucaoRepository, AluguelRepository aluguelRepository) {
+        this.devolucaoRepository = devolucaoRepository;
+        this.aluguelRepository = aluguelRepository;
     }
 
-    public void registrarDevolucao(String placa, String nomeCliente, String documentoCliente, LocalDateTime dataDevolucaoFinal, String nomeAgencia){
-        Optional<Aluguel<T, P>> aluguelOpt = alugueis.stream()
-                        .filter(aluguel -> aluguel
-                        .getVeiculo().getPlaca().equalsIgnoreCase(placa) &&
-                        !aluguel.getVeiculo().getDisponivel()).findFirst();
-        if(aluguelOpt.isPresent()){
-            Aluguel<T, P> aluguel = aluguelOpt.get();
-            T veiculo = aluguel.getVeiculo();
-            veiculo.setDisponivel(true);
-
-            devolucao = new Devolucao<>(dataDevolucaoFinal,aluguel, BigDecimal.ZERO);
-
+    @Override
+    public void registrarDevolucao(Devolucao devolucao) {
+        Devolucao devolucaoExistente = devolucaoRepository.getById(devolucao.getId());
+        if (devolucaoExistente == null) {
+            Aluguel aluguel = devolucao.getVeiculoAluguel();
+            if (aluguel != null && !aluguel.getVeiculo().getDisponivel()) {
+                aluguel.getVeiculo().setDisponivel(true);
+                devolucaoRepository.salvar(devolucao);
+                ScannerUtil.exibirSucesso("Devolução registrada com sucesso.");
+            } else {
+                ScannerUtil.exibirInvalido("Aluguel associado não encontrado ou já devolvido.");
+            }
         } else {
-            throw new RuntimeException("Erro: Veículo com placa " + placa + " não encontrado ou não está alugado.");
+            ScannerUtil.exibirInvalido("Devolução com ID " + devolucao.getId() + " já existe.");
         }
     }
 
-    public BigDecimal calcularTaxaAtraso() {
-        long diasAtraso = ChronoUnit.DAYS.between(devolucao.getAluguel().getDataDevolucao(), devolucao.getDataDeDevolucaoFinal());
+    @Override
+    public void editarDevolucao(Devolucao devolucao) {
+        Devolucao devolucaoExistente = devolucaoRepository.getById(devolucao.getId());
+        if (devolucaoExistente != null) {
+            devolucaoRepository.editar(devolucao);
+            ScannerUtil.exibirSucesso("Devolução editada com sucesso.");
+        } else {
+            ScannerUtil.exibirInvalido("Devolução com ID " + devolucao.getId() + " não encontrada.");
+        }
+    }
+
+    @Override
+    public void removerDevolucao(String idDevolucao) {
+        Devolucao devolucao = devolucaoRepository.getById(idDevolucao);
+        if (devolucao != null) {
+            devolucaoRepository.remover(devolucao);
+            ScannerUtil.exibirSucesso("Devolução removida com sucesso.");
+        } else {
+            ScannerUtil.exibirInvalido("Devolução com ID " + idDevolucao + " não encontrada.");
+        }
+    }
+
+    @Override
+    public Devolucao getDevolucaoById(String idDevolucao) {
+        return devolucaoRepository.getById(idDevolucao);
+    }
+
+    @Override
+    public List<Devolucao> buscarDevolucaoPorNomeCliente(String nomeCliente) {
+        List<Devolucao> devolucoes = devolucaoRepository.procurarPeloNomeCliente(nomeCliente);
+
+        if (devolucoes.isEmpty()) {
+            ScannerUtil.exibirInvalido("Nenhuma devolução encontrada para o cliente: " + nomeCliente);
+        } else {
+            ScannerUtil.exibirSucesso(devolucoes.size() + " devolução(ões) encontrada(s) para o cliente: " + nomeCliente);
+            devolucoes.forEach(devolucao -> System.out.println(devolucao));
+        }
+        return devolucoes;
+    }
+
+    @Override
+    public void listarDevolucoes() {
+        List<Devolucao> devolucoes = devolucaoRepository.listarTodos();
+        if (devolucoes.isEmpty()) {
+            ScannerUtil.exibirInvalido("Nenhuma devolução cadastrada.");
+        } else {
+            devolucoes.forEach(devolucao -> System.out.println(devolucao));
+        }
+    }
+
+    @Override
+    public BigDecimal calcularValorAluguel(Devolucao devolucao) {
+        Aluguel aluguel = devolucao.getVeiculoAluguel();
+        if (aluguel == null) {
+            throw new IllegalArgumentException("Aluguel associado à devolução não pode ser nulo.");
+        }
+
+        long diasAlugados = ChronoUnit.DAYS.between(aluguel.getDataAluguel(), devolucao.getDataDeDevolucaoFinal());
+        BigDecimal valorTotal = aluguel.getVeiculo().getValorGrupo().multiply(BigDecimal.valueOf(diasAlugados));
+
+        if (aluguel.getPessoa().getTipo() == TipoCliente.PESSOA_FISICA && diasAlugados > 5) {
+            valorTotal = valorTotal.multiply(BigDecimal.valueOf(0.95));
+        } else if (aluguel.getPessoa().getTipo() == TipoCliente.PESSOA_JURIDICA && diasAlugados > 3) {
+            valorTotal = valorTotal.multiply(BigDecimal.valueOf(0.90));
+        }
+
+
+        long diasAtraso = ChronoUnit.DAYS.between(aluguel.getDataDevolucao(), devolucao.getDataDeDevolucaoFinal());
+        BigDecimal taxaAtraso = BigDecimal.ZERO;
         if (diasAtraso > 0) {
-            return BigDecimal.valueOf(0.01).multiply(new BigDecimal(diasAtraso));
+            taxaAtraso = BigDecimal.valueOf(0.01).multiply(BigDecimal.valueOf(diasAtraso));
         }
-        return BigDecimal.ZERO;
+
+        BigDecimal valorAluguelFinal = valorTotal.add(taxaAtraso);
+        devolucao.setValorAluguelFinal(valorAluguelFinal);
+        return valorAluguelFinal;
     }
 
     @Override
-    public BigDecimal calcularValorAluguel() {
-        AluguelSeviceImpl<?, ?> aluguelSevice = new AluguelSeviceImpl<>(devolucao.getAluguel());
-        BigDecimal valorTotalAluguel = aluguelSevice.calcularValorAluguel();
-        BigDecimal taxaAtraso = calcularTaxaAtraso();
+    public String gerarComprovante(Devolucao devolucao) {
+        BigDecimal valorTotalAluguel = calcularValorAluguel(devolucao);
+        long diasAtraso = ChronoUnit.DAYS.between(devolucao.getVeiculoAluguel().getDataDevolucao(), devolucao.getDataDeDevolucaoFinal());
+        BigDecimal taxaAtraso = diasAtraso > 0 ? BigDecimal.valueOf(0.01).multiply(BigDecimal.valueOf(diasAtraso)) : BigDecimal.ZERO;
 
-        return valorTotalAluguel.add(taxaAtraso);
-    }
-
-    @Override
-    public String gerarComprovante() {
         return String.format("""
                         ========== Comprovante de Devolução ==========
-                        Veiculo: %s
+                        Veículo: %s
                         Cliente: %s
-                        Agencia de Devolução: %s
+                        Agência de Devolução: %s
                         Data de Aluguel: %s
-                        Data de Devolucao Prevista: %s
-                        Data de Devolucao Final: %s
-                        Valor da Taxa de Atraso: %s
-                        Valor Total do Aluguel: %s
+                        Data de Devolução Prevista: %s
+                        Data de Devolução Final: %s
+                        Valor da Taxa de Atraso: R$ %.2f
+                        Valor Total do Aluguel: R$ %.2f
                         """,
-                devolucao.getAluguel().getVeiculo().getGrupoVeiculo(),
-                devolucao.getAluguel().getPessoa().getNome(),
-                devolucao.getAluguel().getAgencia().getNome(),
-                devolucao.getAluguel().getDataAluguel().toString(),
-                devolucao.getAluguel().getDataDevolucao().toString(),
-                devolucao.getDataDeDevolucaoFinal().toString(),
-                calcularTaxaAtraso().toString(),
-                calcularValorAluguel().toString());
-
+                devolucao.getVeiculoAluguel().getVeiculo().getModelo(),
+                devolucao.getVeiculoAluguel().getPessoa().getNome(),
+                devolucao.getVeiculoAluguel().getAgenciaDevolucao().getNome(),
+                devolucao.getVeiculoAluguel().getDataAluguel(),
+                devolucao.getVeiculoAluguel().getDataDevolucao(),
+                devolucao.getDataDeDevolucaoFinal(),
+                taxaAtraso,
+                valorTotalAluguel);
     }
 }

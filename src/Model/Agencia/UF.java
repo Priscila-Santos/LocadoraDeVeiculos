@@ -27,5 +27,5 @@ public enum UF {
     SC,
     SP,
     SE,
-    TO;
+    TO
 }

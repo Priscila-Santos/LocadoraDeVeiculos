@@ -1,7 +1,7 @@
 package Model.Agencia;
 
 public class Agencia {
-    private String id;
+    private final String id;
     private String nome;
     private Endereco endereco;
 

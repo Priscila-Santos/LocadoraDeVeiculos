@@ -11,7 +11,7 @@ public interface ClienteService {
 
     List<Cliente> buscarPorNome(String nome);
 
-    void listarClientes();
+    List<Cliente> listarClientes();
 
     void removerCliente(String idCliente);
 }
