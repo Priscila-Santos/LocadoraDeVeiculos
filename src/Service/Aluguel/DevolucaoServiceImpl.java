@@ -9,12 +9,14 @@ import Repository.Aluguel.DevolucaoRepository;
 import Utils.ScannerUtil;
 
 import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class DevolucaoServiceImpl implements DevolucaoService {
     private final DevolucaoRepository devolucaoRepository;
     private final AluguelRepository aluguelRepository;
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public DevolucaoServiceImpl(DevolucaoRepository devolucaoRepository, AluguelRepository aluguelRepository) {
         this.devolucaoRepository = devolucaoRepository;
@@ -136,9 +138,9 @@ public class DevolucaoServiceImpl implements DevolucaoService {
                 devolucao.getVeiculoAluguel().getVeiculo().getModelo(),
                 devolucao.getVeiculoAluguel().getPessoa().getNome(),
                 devolucao.getVeiculoAluguel().getAgenciaDevolucao().getNome(),
-                devolucao.getVeiculoAluguel().getDataAluguel(),
-                devolucao.getVeiculoAluguel().getDataDevolucao(),
-                devolucao.getDataDeDevolucaoFinal(),
+                devolucao.getVeiculoAluguel().getDataAluguel().format(formatter),
+                devolucao.getVeiculoAluguel().getDataDevolucao().format(formatter),
+                devolucao.getDataDeDevolucaoFinal().format(formatter),
                 taxaAtraso,
                 valorTotalAluguel);
     }

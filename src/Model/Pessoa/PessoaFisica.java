@@ -19,11 +19,11 @@ public class PessoaFisica extends Cliente {
 
     @Override
     public String toString() {
-        return "PessoaFisica{" +
+        return "Cliente PF: [" +
                 "nome='" + getNome() + '\'' +
                 ", telefone='" + getTelefone() + '\'' +
                 ", email='" + getEmail() + '\'' +
                 ", cpf='" + cpf + '\'' +
-                '}';
+                ']';
     }
 }

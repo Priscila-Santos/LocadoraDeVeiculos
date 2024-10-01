@@ -182,13 +182,10 @@ public class AluguelView {
             }
             Agencia agenciaDevolucao = agenciaDevolucaoOpt.get();
 
-            // Usando a data atual
             LocalDateTime dataAluguel = LocalDateTime.now();
 
-            // Utilizando ScannerUtil para ler e formatar a data de devolução
             LocalDateTime dataDevolucao = ScannerUtil.lerLocalDateTime("Digite a data prevista para devolução (dd/MM/yyyy): ");
 
-            // Criando o aluguel
             Aluguel aluguel = new Aluguel(
                     veiculo,
                     cliente,
@@ -471,10 +468,7 @@ public class AluguelView {
         List<Cliente> clientes = clienteService.listarClientes();
         if (clientes.isEmpty()) {
             System.out.println("Nenhum cliente cadastrado.");
-            return;
-        }
-        clientes.forEach(cliente -> System.out.println(cliente));
-    }
+    }}
 
     private void listarVeiculosDisponiveis() {
         System.out.println("\n--- Lista de Veículos Disponíveis ---");
@@ -496,8 +490,6 @@ public class AluguelView {
         List<Agencia> agencias = agenciaService.listarAgencias();
         if (agencias.isEmpty()) {
             System.out.println("Nenhuma agência cadastrada.");
-            return;
         }
-        agencias.forEach(agencia -> System.out.println(agencia));
     }
 }

@@ -46,13 +46,14 @@ devolução de veículos.
 
 ### Diagrama de Classes
 
-!Diagrama de Classes
+[Diagrama de Classes](https://lucid.app/lucidchart/f3ffbcab-c61e-4982-80d2-56c0caebf328/edit?viewport_loc=-946%2C-1132%2C4490%2C2178%2C0_0&invitationId=inv_eff984ba-3d19-4dc0-bd6c-415679d53590)
 
 ### Pacotes Principais
 
 - `Model`: Contém as classes de modelo, como `Veiculo`, `Cliente`, `Agencia`, `Aluguel`, `Devolucao`.
 - `Service`: Contém as classes de serviço que implementam a lógica de negócios,
   como `AluguelService`, `DevolucaoService`, `VeiculoService` e `AgenciaService`.
+- `Repository`: Contém as classes responsáveis por realizar as operações de armazenamento, edição e exclusão de dados das entidades.
 - `View`: Contém as classes responsáveis pela interface com o usuário.
 - `Util`: Contém utilitários, como `ScannerUtil`.
 
@@ -81,11 +82,19 @@ devolução de veículos.
 ## Princípios SOLID Aplicados
 
 - **S**ingle Responsibility Principle (SRP): Cada classe tem uma única responsabilidade.
+  - Exemplo de aplicação: O VeiculoService lida com a lógica de negócio dos veículos, o VeiculoRepository gerencia a persistência dos dados, e o VeiculosView lida com a interface do usuário. Cada classe possui uma única responsabilidade.
+
 - **O**pen/Closed Principle (OCP): As classes estão abertas para extensão, mas fechadas para modificação.
+  - Exemplo de aplicação: Adicionar novos tipos de veículos ou novas funcionalidades no futuro, como novos métodos de busca ou regras de negócio, é possível estender a lógica sem modificar diretamente as classes existentes.
+
 - **L**iskov Substitution Principle (LSP): As subclasses podem ser substituídas por suas superclasses.
+  - Exemplo de aplicação: As subclasses como Carro, Moto, e Caminhao podem substituir a classe base Veiculo sem causar problemas. Elas respeitam o comportamento esperado de Veiculo, permitindo que o código funcione corretamente ao lidar com diferentes tipos de veículos.
+
 - **I**nterface Segregation Principle (ISP): Interfaces específicas foram criadas para diferentes funcionalidades.
 - **D**ependency Inversion Principle (DIP): As classes de alto nível não dependem de classes de baixo nível, mas de
   abstrações.
+  - Exemplo de aplicação: O VeiculoService depende da abstração VeiculoRepository, e não de uma implementação específica. Isso permite trocar a implementação do repositório, por exemplo, mudando de um armazenamento em memória para um banco de dados real, sem afetar o serviço.
+
 
 ## Apresentação
 
