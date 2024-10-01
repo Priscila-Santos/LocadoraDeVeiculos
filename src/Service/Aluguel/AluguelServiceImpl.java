@@ -7,11 +7,13 @@ import Repository.Aluguel.AluguelRepository;
 import Utils.ScannerUtil;
 
 import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class AluguelServiceImpl implements AluguelService {
     private final AluguelRepository aluguelRepository;
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public AluguelServiceImpl(AluguelRepository aluguelRepository) {
         this.aluguelRepository = aluguelRepository;
@@ -110,8 +112,8 @@ public class AluguelServiceImpl implements AluguelService {
                 aluguel.getPessoa().getNome(),
                 aluguel.getAgencia().getNome(),
                 aluguel.getAgenciaDevolucao().getNome(),
-                aluguel.getDataAluguel(),
-                aluguel.getDataDevolucao(),
+                aluguel.getDataAluguel().format(formatter),
+                aluguel.getDataDevolucao().format(formatter),
                 valorAluguel);
     }
 }
